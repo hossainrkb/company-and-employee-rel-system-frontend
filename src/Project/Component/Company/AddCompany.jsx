@@ -26,7 +26,7 @@ class AddCompany extends OwnCustomForm {
         subscription_end: "",
         subscription_fee: "",
       },
-      isUpdateInfo:false
+      isUpdateInfo: false,
     };
   }
   handleValidation = (name, value) => {
@@ -51,27 +51,33 @@ class AddCompany extends OwnCustomForm {
     return "";
   };
   doSubmit = async (e) => {
-    if(this.props.match.params.id){
-      this.props.updateCompany(this.state.data,this.props.match.params.id)
-      this.props.history.push("/company")
-    }else{
-      await add_company(this.state.data);
-      this.props.storeCompany(this.state.data)
+    if (this.props.match.params.id) {
+      this.props.updateCompany(this.state.data, this.props.match.params.id);
+      this.props.history.push("/company");
+    } else {
+      let data = await add_company(this.state.data);
+      let { data: parseData } = data;
+      if (parseData.status == "ok") {
+        let { data: finalData } = parseData;
+        this.props.storeCompany(this.state.data, finalData.id);
+        this.props.history.push("/company");
+      }
     }
   };
-  componentDidMount(){
-    if(this.props.match.params.id){
+  componentDidMount() {
+    if (this.props.match.params.id) {
       let company = this.props.showCompany(this.props.match.params.id);
       let companyDetail = {
-          name: company.name,
-          username: company.username,
-          password: company.password,
-          email: company.email,
-          subscription_start: "",
-          subscription_end: "",
-          subscription_fee: company.sub_fee
-      }
-      this.setState({data:companyDetail,isUpdateInfo:true})
+        id: this.props.match.params.id,
+        name: company.name,
+        username: company.username,
+        password: company.password,
+        email: company.email,
+        subscription_start: "",
+        subscription_end: "",
+        subscription_fee: company.sub_fee,
+      };
+      this.setState({ data: companyDetail, isUpdateInfo: true });
     }
   }
   render() {
@@ -92,7 +98,9 @@ class AddCompany extends OwnCustomForm {
             <Col md="12">
               <Card>
                 <Card.Header>
-                  <Card.Title as="h4">{this.state.isUpdateInfo?'Update':'Add'} Comapny</Card.Title>
+                  <Card.Title as="h4">
+                    {this.state.isUpdateInfo ? "Update" : "Add"} Comapny
+                  </Card.Title>
                 </Card.Header>
                 <Card.Body>
                   <form onSubmit={this.handleFormSubmit}>
@@ -179,24 +187,24 @@ class AddCompany extends OwnCustomForm {
                         />
                       </Col>
                     </Row>
-                    {
-                      (this.state.isUpdateInfo)? (    <Button
+                    {this.state.isUpdateInfo ? (
+                      <Button
                         className="btn-fill pull-right"
                         type="submit"
                         variant="info"
                       >
                         Update Company
-                      </Button>):(
-                            <Button
-                            className="btn-fill pull-right"
-                            type="submit"
-                            variant="info"
-                          >
-                            Add Company
-                          </Button>
-                      )
-                    }
-                
+                      </Button>
+                    ) : (
+                      <Button
+                        className="btn-fill pull-right"
+                        type="submit"
+                        variant="info"
+                      >
+                        Add Company
+                      </Button>
+                    )}
+
                     <div className="clearfix"></div>
                   </form>
                 </Card.Body>

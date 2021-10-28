@@ -1,23 +1,24 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import _ from "lodash";
 import { Card, Table, Container, Row, Col } from "react-bootstrap";
 import TableHeader from "../../Common/TableHeader.Component";
 import TableBody from "../../Common/TableBody.Component";
 import Pagination from "../../Common/Pagination.Component";
-class List extends Component {
+class List extends PureComponent {
   render() {
     let {
-      sortedCompanies,
-      paginateCompany,
+      sortedDatas,
+      paginateDatas,
       sortColumn,
       columns,
-      actionButtonCompany,
+      actionButton,
       handleSort,
       handleClickePaginationPage,
       pageCount,
       activePage,
     } = this.props;
     return (
+
       <Container fluid>
         <Row>
           <Col md="12">
@@ -32,13 +33,13 @@ class List extends Component {
                     handleSort={handleSort}
                     sortColumn={sortColumn}
                   />
-                  <TableBody items={paginateCompany} columns={columns} actionButtonCompany={actionButtonCompany} />
+                  <TableBody items={paginateDatas} columns={columns} actionButton={actionButton} />
                 </Table>
                 <Pagination
                   totalItems={
-                    sortedCompanies != undefined
-                      ? sortedCompanies.length
-                      : sortedCompanies.length
+                    sortedDatas != undefined
+                      ? sortedDatas.length
+                      : sortedDatas.length
                   }
                   pageCount={pageCount}
                   activePage={activePage}
