@@ -3,7 +3,7 @@ import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import { withRouter } from "react-router";
 import OwnCustomForm from "../../Common/Form";
 import Input from "../../Common/Input";
-import { add_company } from "../../Service/companyService";
+import { add_company,update_company } from "../../Service/companyService";
 class AddCompany extends OwnCustomForm {
   constructor(props) {
     super(props);
@@ -52,8 +52,12 @@ class AddCompany extends OwnCustomForm {
   };
   doSubmit = async (e) => {
     if (this.props.match.params.id) {
+      let data = await update_company(this.state.data,this.props.match.params.id);
+      let { data: parseData } = data;
+      if (parseData.status == "ok") {
       this.props.updateCompany(this.state.data, this.props.match.params.id);
       this.props.history.push("/company");
+      }
     } else {
       let data = await add_company(this.state.data);
       let { data: parseData } = data;

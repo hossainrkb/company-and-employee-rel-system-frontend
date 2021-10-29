@@ -4,6 +4,8 @@ import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import OwnCustomForm from "../../Common/Form";
 import Input from "../../Common/Input";
 import { login } from "../../Service/adminService";
+import AdminLoginCredentialContext from "../../Common/AdminLoginCredentialContext";
+const AdminLoginCredentialContextObj = new AdminLoginCredentialContext
 class AdminLogin extends OwnCustomForm {
   constructor(props) {
     super(props);
@@ -54,8 +56,9 @@ class AdminLogin extends OwnCustomForm {
       "jdH6etdqVP0adl8dlGBgac9YcFm2kG8ZwLM1KBCw"
     );
     urlencoded.append("grant_type", "password");
-   let data =  await login(urlencoded);
-  //  window.location = "/company";
+    let data = await login(urlencoded);
+    let setToken = AdminLoginCredentialContextObj.SetToken({ token: data });
+    // window.location = "/company";
     this.props.history.push("/")
   };
   render() {

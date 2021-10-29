@@ -31,11 +31,12 @@ import ProjectAdminApp from "./Project/ProjectAdminApp.jsx";
 import AdminLogin from "./Project/Component/Admin/Login";
 ReactDOM.render(
   <BrowserRouter>
-  {/* <Route
+   <Route
         exact
         path="/admin-login"
         render={(props) => <AdminLogin {...props} />}
         />
+  {/*
   <Route
         exact
         path="/"

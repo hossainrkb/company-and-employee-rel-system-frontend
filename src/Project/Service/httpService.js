@@ -1,7 +1,4 @@
 import axios from "axios";
-if(localStorage.getItem("accessTokenAdmin")){
-  axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem("accessTokenAdmin");
-}
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
     error.response &&

@@ -1,27 +1,44 @@
 import http from "./httpService";
+import { getAdminHeaders } from "./headers";
+import createContext from "../Common/OwnContext";
 export async function login(admin) {
   try {
-    let {data:{access_token}}  = await http.post(`${process.env.REACT_APP_SERVER_URL}/oauth/token`, admin);
+    let {
+      data: { access_token },
+    } = await http.post(
+      `${process.env.REACT_APP_SERVER_URL}/oauth/token`,
+      admin
+    );
     localStorage.setItem("accessTokenAdmin", access_token);
     return Promise.resolve(access_token);
   } catch (error) {
     return Promise.reject(error);
   }
 }
-export function getCurrentUser() {
+export async function getCurrentUser() {
   try {
-   return localStorage.getItem("accessTokenAdmin")?true:false;
-    // return await http.post(`${process.env.REACT_APP_SERVER_URL}/api/admin/profile`);
+    let { data } = await http.post(
+      `${process.env.REACT_APP_SERVER_URL}/api/admin/profile`,
+      null,
+      getAdminHeaders()
+    );
+    if (data.status == "ok") {
+      return Promise.resolve(data);
+    } else {
+      return Promise.reject(error);
+    }
   } catch (error) {
-    return null;
+    return Promise.reject(error);
   }
 }
 export async function logout() {
   try {
     localStorage.removeItem("accessTokenAdmin");
-    return await http.post(`${process.env.REACT_APP_SERVER_URL}/api/admin/logout`);
+    createContext(null)
+    return await http.post(
+      `${process.env.REACT_APP_SERVER_URL}/api/admin/logout`
+    );
   } catch (error) {
     return null;
   }
 }
-

@@ -7,7 +7,7 @@ class Crud extends PureComponent {
     this.state = {
       datas: [],
       activePage: 1,
-      pageCount: 2,
+      pageCount: 5,
       sortColumn: props.sortColumn?props.sortColumn:{},
     };
   }
@@ -29,9 +29,13 @@ class Crud extends PureComponent {
     });
     this.setState({ datas: updateDatas });
   };
-  deleteData = (e, id) => {
-    let deletedatas = this.state.datas.filter((e) => e.id != id);
-    this.setState({ datas: deletedatas });
+  deleteData = async (e, id) => {
+    let data = await this.props.destroyRow(id);
+    if(data.status == "ok"){
+      alert(data.message)
+      let deletedatas = this.state.datas.filter((e) => e.id != id);
+      this.setState({ datas: deletedatas });
+    }
   };
   sortData = () => {
     const { sortColumn, datas } = this.state;
@@ -59,7 +63,6 @@ class Crud extends PureComponent {
   setDataToState = ({data}) => {
     this.setState({ datas: data });
   };
-
   async componentDidMount () {
     if(this.props.populateBaseArray){
       this.setDataToState(await this.props.populateBaseArray())

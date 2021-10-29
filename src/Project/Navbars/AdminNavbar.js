@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import {logout} from '../Service/adminService'
+import React, { Component, useState, useEffect } from "react";
+import { logout } from "../Service/adminService";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-
+import AdminInfoContext from "../Component/Context/AdminInfoContext";
 function Header() {
   let history = useHistory();
+  const [Admin, setAdmin] = useState({});
   const mobileSidebarToggle = (e) => {
     e.preventDefault();
     document.documentElement.classList.toggle("nav-open");
@@ -17,14 +18,22 @@ function Header() {
     document.body.appendChild(node);
   };
 
-  const handleLogout = async ()=>{
-    await logout()
+  const handleLogout = async () => {
+    await logout();
     history.push(`/admin-login`);
-  }
+  };
 
   const getBrandText = () => {
     return "Admin";
   };
+  const getAdminName = async () => {
+    // let {data} = await getCurrentUser();
+    // setAdmin(data);
+  };
+  // useEffect(() => {
+  //   getAdminName();
+  // },[]);
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -80,14 +89,19 @@ function Header() {
                 href="#pablo"
                 onClick={(e) => e.preventDefault()}
               >
-                <span className="no-icon">Account</span>
+                <AdminInfoContext.Consumer>
+                  {({ admininfo }) => {
+                    return (
+                      <span className="no-icon">
+                        {admininfo ? admininfo.name : "Guest"}
+                      </span>
+                    );
+                  }}
+                </AdminInfoContext.Consumer>
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link
-                className="m-0"
-                onClick={(e) => handleLogout()}
-              >
+              <Nav.Link className="m-0" onClick={(e) => handleLogout()}>
                 <span className="no-icon">Log out</span>
               </Nav.Link>
             </Nav.Item>
