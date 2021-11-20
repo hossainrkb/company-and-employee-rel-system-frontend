@@ -1,9 +1,9 @@
 import React, { Component, useState, useEffect } from "react";
-import { logout } from "../Service/adminService";
+
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import AdminInfoContext from "../Component/Context/AdminInfoContext";
-function Header() {
+function Header({handleLogoutAdmin}) {
   let history = useHistory();
   const [Admin, setAdmin] = useState({});
   const mobileSidebarToggle = (e) => {
@@ -19,20 +19,12 @@ function Header() {
   };
 
   const handleLogout = async () => {
-    await logout();
-    history.push(`/admin-login`);
+    handleLogoutAdmin()
   };
 
   const getBrandText = () => {
     return "Admin";
   };
-  const getAdminName = async () => {
-    // let {data} = await getCurrentUser();
-    // setAdmin(data);
-  };
-  // useEffect(() => {
-  //   getAdminName();
-  // },[]);
 
   return (
     <Navbar bg="light" expand="lg">

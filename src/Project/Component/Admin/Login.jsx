@@ -59,7 +59,7 @@ class AdminLogin extends OwnCustomForm {
     let data = await login(urlencoded);
     let setToken = AdminLoginCredentialContextObj.SetToken({ token: data });
     // window.location = "/company";
-    this.props.history.push("/")
+    this.props.history.push("/company")
   };
   render() {
     const { password, email } = this.state.data;

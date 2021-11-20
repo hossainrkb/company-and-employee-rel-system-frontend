@@ -28,21 +28,30 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 // import 'bootstrap/dist/css/bootstrap.css';
 
 import ProjectAdminApp from "./Project/ProjectAdminApp.jsx";
+import ProjectApp from "./Project/ProjectApp.jsx";
 import AdminLogin from "./Project/Component/Admin/Login";
 ReactDOM.render(
   <BrowserRouter>
-   <Route
-        exact
-        path="/admin-login"
-        render={(props) => <AdminLogin {...props} />}
-        />
-  {/*
+    <Route
+      exact
+      path="/admin-login"
+      render={(props) => <AdminLogin {...props} />}
+    />
+    {/*
   <Route
         exact
         path="/"
         render={(props) => <ProjectAdminApp {...props} />}
         /> */}
-    <ProjectAdminApp />
+    {/* <Route
+      exact
+      path="/admin"
+      render={(props) => {
+        return <ProjectAdminApp />;
+      }}
+    /> */}
+    {/* <ProjectAdminApp /> */}
+    <ProjectApp />
   </BrowserRouter>,
   document.getElementById("root")
 );

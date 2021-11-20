@@ -8,13 +8,12 @@ import AdminSidebar from "./Sidebar/AdminSidebar";
 import sidebarImage from "assets/img/sidebar-3.jpg";
 import AddCompany from "./Component/Company/AddCompany";
 import CompanyList from "./Component/Company/List";
-import { getAdminHeaders } from "./Service/headers";
+
 import {
   all_company,
   destroy_company,
-  update_company,
 } from "./Service/companyService";
-import { getCurrentUser } from "./Service/adminService";
+
 import AdminInfoContext from "./Component/Context/AdminInfoContext";
 class ProjectAdminApp extends PureComponent {
   constructor() {
@@ -25,7 +24,6 @@ class ProjectAdminApp extends PureComponent {
       companies: [],
       hasImage: true,
       sortColumn: { column: "name", order: "asc" },
-      adminInfo: {},
     };
   }
   allCompany = async () => {
@@ -40,16 +38,10 @@ class ProjectAdminApp extends PureComponent {
       return data;
     }
   };
-   componentDidMount() {
-  }
-  async componentDidUpdate(){
-    let { data } = await getCurrentUser();
-    if(data.id !=this.state.adminInfo.id || Object.keys(this.state.adminInfo).length<0 ){
-      this.setState({ adminInfo: data });
-    }
-  }
+
+
   render() {
-    if(!getAdminHeaders())return true;
+    if (Object.getOwnPropertyNames(this.props.adminInfo).length==0) return true;
     let columnsCompany = [
       { path: "name", label: "Name", content: (item) => item.name },
       { path: "username", label: "UserName", content: (item) => item.username },
@@ -63,8 +55,10 @@ class ProjectAdminApp extends PureComponent {
         <div className="wrapper">
           <AdminSidebar color={color} image={hasImage ? image : ""} />
           <div className="main-panel">
-            <AdminInfoContext.Provider value={{ admininfo: this.state.adminInfo }}>
-              <AdminNavbar />
+            <AdminInfoContext.Provider
+              value={{ admininfo: this.props.adminInfo }}
+            >
+              <AdminNavbar handleLogoutAdmin={this.props.handleLogoutAdmin} />
             </AdminInfoContext.Provider>
             <div className="content">
               <Switch>
@@ -129,13 +123,12 @@ class ProjectAdminApp extends PureComponent {
                           columns: columnsCompany,
                           actionButton: actionButtonComapany,
                         };
-                        return (
-                            <CompanyList {...props} {...new_obj} />
-                        );
+                        return <CompanyList {...props} {...new_obj} />;
                       }}
                     </Crud>
                   )}
                 />
+               
               </Switch>
             </div>
             <AdminFooter />
