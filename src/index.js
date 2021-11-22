@@ -32,21 +32,6 @@ import ProjectApp from "./Project/ProjectApp.jsx";
 import AdminLogin from "./Project/Component/Admin/Login";
 ReactDOM.render(
   <BrowserRouter>
- 
-    {/*
-  <Route
-        exact
-        path="/"
-        render={(props) => <ProjectAdminApp {...props} />}
-        /> */}
-    {/* <Route
-      exact
-      path="/admin"
-      render={(props) => {
-        return <ProjectAdminApp />;
-      }}
-    /> */}
-    {/* <ProjectAdminApp /> */}
     <ProjectApp />
   </BrowserRouter>,
   document.getElementById("root")

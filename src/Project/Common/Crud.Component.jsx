@@ -64,7 +64,11 @@ class Crud extends PureComponent {
   };
   async componentDidMount () {
     if(this.props.populateBaseArray){
-      this.setDataToState(await this.props.populateBaseArray())
+      if (this.props.match.params.documentID) {
+        this.setDataToState(await this.props.populateBaseArray(this.props.match.params.documentID))
+      }else{
+        this.setDataToState(await this.props.populateBaseArray())
+      }
     }
   }
   render() {

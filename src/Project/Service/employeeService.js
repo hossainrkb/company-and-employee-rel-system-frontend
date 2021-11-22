@@ -1,33 +1,33 @@
 import http from "./httpService";
-import { getAdminHeaders } from "./adminHeadersService";
+import { getCompanyHeaders } from "./companyHeadersService";
 require("dotenv").config();
 
-export async function all_company() {
+export async function all_employee(companyID) {
   return await http.post(
-    `${process.env.REACT_APP_SERVER_URL}/api/admin/companies`,
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyID}/list-employee`,
     null,
-    getAdminHeaders()
+    getCompanyHeaders()
   );
 }
-export function add_company(company) {
+export function add_employee(employee,companyID) {
   return http.post(
-    `${process.env.REACT_APP_SERVER_URL}/api/admin/add-company`,
-    company,
-    getAdminHeaders()
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyID}/add-employee`,
+    employee,
+    getCompanyHeaders()
   );
 }
-export function update_company(company, id) {
+export function update_employee(company, id) {
   return http.post(
     `${process.env.REACT_APP_SERVER_URL}/api/admin/${id}/update-company`,
     company,
-    getAdminHeaders()
+    getCompanyHeaders()
   );
 }
-export function destroy_company(id) {
+export function destroy_employee(companyID,id) {
   return http.post(
     `${process.env.REACT_APP_SERVER_URL}/api/admin/${id}/destroy-company`,
     null,
-    getAdminHeaders()
+    getCompanyHeaders()
   );
 }
 

@@ -1,5 +1,5 @@
 import http from "./httpService";
-import { getAdminHeaders } from "./headers";
+import { getAdminHeaders } from "./adminHeadersService";
 import createContext from "../Common/OwnContext";
 export async function login(admin) {
   try {
@@ -15,7 +15,7 @@ export async function login(admin) {
     return Promise.reject(error);
   }
 }
-export async function getCurrentUser() {
+export async function getCurrentAdmin() {
   try {
     let { data } = await http.post(
       `${process.env.REACT_APP_SERVER_URL}/api/admin/profile`,
