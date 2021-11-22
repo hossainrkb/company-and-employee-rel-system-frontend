@@ -63,6 +63,7 @@ class Crud extends PureComponent {
     this.setState({ datas: data });
   };
   async componentDidMount () {
+    console.log("DID MOUNT===============>")
     if(this.props.populateBaseArray){
       if (this.props.match.params.documentID) {
         this.setDataToState(await this.props.populateBaseArray(this.props.match.params.documentID))
@@ -70,6 +71,9 @@ class Crud extends PureComponent {
         this.setDataToState(await this.props.populateBaseArray())
       }
     }
+  }
+  componentDidUpdate(){
+    console.log("DID UPDATE===============>")
   }
   render() {
     const { sortColumn, activePage, pageCount } = this.state;

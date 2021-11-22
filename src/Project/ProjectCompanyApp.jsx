@@ -48,37 +48,23 @@ class ProjectCompanyApp extends PureComponent {
               />
               <Route
                 exact
-                path="/company/:companyId/add-employee"
+                path="/company/:documentID/add-employee"
                 render={(props) => (
-                  <Crud>
+                  <Crud
+                  sortColumn={sortColumn}
+                  populateBaseArray={this.allEmployee}
+                  destroyRow={this.destroyEmployee}
+                  >
                     {(obj) => {
+                      console.log(obj)
                       return (
                         <AddEmployee 
-                        populateBaseArray={this.allEmployee}
                         {...props} {...obj} storeEmployeeState={obj.storeData} />
                       );
                     }}
                   </Crud>
                 )}
               />
-              {/* <Route
-                  exact
-                  path="/edit-company/:id"
-                  render={(props) => (
-                    <Crud>
-                      {(obj) => {
-                        return (
-                          <AddCompany
-                            {...props}
-                            showCompany={obj.showData}
-                            updateCompany={obj.updateData}
-                          />
-                        );
-                      }}
-                    </Crud>
-                  )}
-                />
-              */}
                 <Route
                   exact
                   path="/company/:documentID/employee"

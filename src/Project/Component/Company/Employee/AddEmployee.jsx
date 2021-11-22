@@ -43,13 +43,12 @@ class AddEmployee extends OwnCustomForm {
       this.props.history.push("/company");
       }
     } else {
-      let data = await add_employee(this.state.data,this.state.data.companyId);
+      let data = await add_employee(this.state.data,this.state.data.documentID);
       let { data: parseData } = data;
       if (parseData.status == "ok") {
         let { data: finalData } = parseData;
-        this.props.populateBaseArray(this.props.match.params.companyId)
-        // this.props.storeEmployeeState(this.state.data, finalData.id);
-        this.props.history.push(`/company/${this.state.data.companyId}/employee`);
+        this.props.storeEmployeeState(this.state.data, finalData.employee.id);
+        this.props.history.push(`/company/${this.state.data.documentID}/employee`);
       }
     }
   };
@@ -68,8 +67,8 @@ class AddEmployee extends OwnCustomForm {
       };
       this.setState({ data: companyDetail, isUpdateInfo: true });
     }
-    if (this.props.match.params.companyId) {
-      let newData = {...this.state.data,companyId:this.props.match.params.companyId};
+    if (this.props.match.params.documentID) {
+      let newData = {...this.state.data,documentID:this.props.match.params.documentID};
       this.setState({ data: newData });
     }
   }
