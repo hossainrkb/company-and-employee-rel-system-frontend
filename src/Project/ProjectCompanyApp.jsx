@@ -6,8 +6,8 @@ import AdminNavbar from "./Navbars/AdminNavbar";
 import AdminFooter from "./Footer/AdminFooter";
 import AdminSidebar from "./Sidebar/AdminSidebar";
 import sidebarImage from "assets/img/sidebar-3.jpg";
-import AddCompany from "./Component/Company/AddCompany";
-import CompanyList from "./Component/Company/List";
+import AddCompany from "./Component/Admin/Company/AddCompany";
+import CompanyList from "./Component/Admin/Company/List";
 import { getAdminHeaders } from "./Service/headers";
 import {
   all_company,

@@ -6,13 +6,10 @@ import AdminNavbar from "./Navbars/AdminNavbar";
 import AdminFooter from "./Footer/AdminFooter";
 import AdminSidebar from "./Sidebar/AdminSidebar";
 import sidebarImage from "assets/img/sidebar-3.jpg";
-import AddCompany from "./Component/Company/AddCompany";
-import CompanyList from "./Component/Company/List";
+import AddCompany from "./Component/Admin/Company/AddCompany";
+import CompanyList from "./Component/Admin/Company/List";
 
-import {
-  all_company,
-  destroy_company,
-} from "./Service/companyService";
+import { all_company, destroy_company } from "./Service/companyService";
 
 import AdminInfoContext from "./Component/Context/AdminInfoContext";
 class ProjectAdminApp extends PureComponent {
@@ -39,9 +36,9 @@ class ProjectAdminApp extends PureComponent {
     }
   };
 
-
   render() {
-    if (Object.getOwnPropertyNames(this.props.adminInfo).length==0) return true;
+    if (Object.getOwnPropertyNames(this.props.adminInfo).length == 0)
+      return true;
     let columnsCompany = [
       { path: "name", label: "Name", content: (item) => item.name },
       { path: "username", label: "UserName", content: (item) => item.username },
@@ -128,7 +125,6 @@ class ProjectAdminApp extends PureComponent {
                     </Crud>
                   )}
                 />
-               
               </Switch>
             </div>
             <AdminFooter />

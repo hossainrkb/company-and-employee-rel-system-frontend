@@ -1,4 +1,4 @@
-const TableBody = ({ items, columns ,actionButton}) => {
+const TableBody = ({ items, columns ,actionButton,editUrl}) => {
   // const renderCell = (column, item,index) => (<td scope="col" key={index} >{column.content(item)}</td>)
   const renderCell = (column, item,index) => {
     if(column.content){
@@ -12,7 +12,7 @@ const TableBody = ({ items, columns ,actionButton}) => {
       let deleteClick = actionButton?actionButton[1].delete.onclickHandle:"";
       return (
       <td scope="col" key={`${index} ${item.id}`} >
-        <i className={`${editicon} ${editclassName}`} onClick={(e)=>{editClick(e,item.id)}}></i> &nbsp;
+        <i className={`${editicon} ${editclassName}`} onClick={(e)=>{editClick(e,item.id,editUrl)}}></i> &nbsp;
       <i className={`${deleteicon} ${deleteclassName}`} onClick={(e)=>{deleteClick(e,item.id)}}></i>
       </td>
       );

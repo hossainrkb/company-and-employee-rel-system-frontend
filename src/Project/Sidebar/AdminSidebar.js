@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 
 function AdminSidebar({ color, image, routes }) {
-
   return (
     <div className="sidebar" data-image={image} data-color={color}>
       <div

@@ -1,6 +1,5 @@
 import React, { PureComponent, Component } from "react";
 import { withRouter } from "react-router";
-import { all_company } from "../Service/companyService";
 class Crud extends PureComponent {
   constructor(props) {
     super(props);
@@ -57,8 +56,8 @@ class Crud extends PureComponent {
     let filtered = updatedatas.filter((e) => e.id == id);
     return filtered[0];
   };
-  editData = (e, id) => {
-    this.props.history.push(`/edit-company/${id}`);
+  editData = (e, id,url) => {
+    this.props.history.push(`/${url}/${id}`);
   };
   setDataToState = ({data}) => {
     this.setState({ datas: data });
