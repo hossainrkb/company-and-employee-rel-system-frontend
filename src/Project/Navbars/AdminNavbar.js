@@ -82,10 +82,10 @@ function Header({handleLogoutAdmin}) {
                 onClick={(e) => e.preventDefault()}
               >
                 <AdminInfoContext.Consumer>
-                  {({ admininfo }) => {
+                  {({adminInfo}) => {
                     return (
                       <span className="no-icon">
-                        {admininfo ? admininfo.name : "Guest"}
+                        {adminInfo ? adminInfo.name : "Guest"}
                       </span>
                     );
                   }}

@@ -52,11 +52,7 @@ class ProjectAdminApp extends PureComponent {
         <div className="wrapper">
           <AdminSidebar color={color} image={hasImage ? image : ""} />
           <div className="main-panel">
-            <AdminInfoContext.Provider
-              value={{ admininfo: this.props.adminInfo }}
-            >
               <AdminNavbar handleLogoutAdmin={this.props.handleLogoutAdmin} />
-            </AdminInfoContext.Provider>
             <div className="content">
               <Switch>
                 <Route

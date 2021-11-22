@@ -5,6 +5,7 @@ import ProjectAdminApp from "./ProjectAdminApp.jsx";
 import { getCurrentUser } from "./Service/adminService";
 import { logout } from "./Service/adminService";
 import AdminLogin from "./Component/Admin/Login";
+import AdminInfoContext from './Component/Context/AdminInfoContext';
 class ProjectApp extends Component {
   constructor() {
     super();
@@ -38,10 +39,12 @@ class ProjectApp extends Component {
             render={(props) => <AdminLogin {...props} />}
           />
         ) : (
+          <AdminInfoContext.Provider value={{ adminInfo:adminInfo }}>
           <ProjectAdminApp
-            adminInfo={this.state.adminInfo}
+            adminInfo={adminInfo}
             handleLogoutAdmin={this.handleLogoutAdmin}
           />
+          </AdminInfoContext.Provider>
         )}
       </>
     );
