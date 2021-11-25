@@ -1,7 +1,9 @@
 import http from "./httpService";
 import { getAdminHeaders } from "./adminHeadersService";
+import { getCompanyHeaders } from "./companyHeadersService";
 require("dotenv").config();
 
+/* From Admin panel */
 export async function all_company() {
   return await http.post(
     `${process.env.REACT_APP_SERVER_URL}/api/admin/companies`,
@@ -31,6 +33,28 @@ export function destroy_company(id) {
   );
 }
 
+/* From Company panel */
+export function decline_leave_application(companyId,leaveId) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/leave/${leaveId}/decline`,
+    null,
+    getCompanyHeaders()
+  );
+}
+export function approve_leave_application(companyId,leaveId) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/leave/${leaveId}/approve`,
+    null,
+    getCompanyHeaders()
+  );
+}
+export function company_dashboard(id) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${id}/dashboard`,
+    null,
+    getCompanyHeaders()
+  );
+}
 export async function login(company) {
   try {
     let {

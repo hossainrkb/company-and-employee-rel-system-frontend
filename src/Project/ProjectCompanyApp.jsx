@@ -8,11 +8,11 @@ import CompanyDashboard from "./Component/Company/Dashboard";
 import AddEmployee from "./Component/Company/Employee/AddEmployee";
 import EmployeeList from "./Component/Company/Employee/List";
 import { all_employee, destroy_employee } from "./Service/employeeService";
+import CompanyInfoContext from "./Component/Context/CompanyInfoContext";
 class ProjectCompanyApp extends PureComponent {
   constructor() {
     super();
     this.state = {
-      companies: [],
       sortColumn: { column: "name", order: "asc" },
     };
   }
@@ -44,7 +44,16 @@ class ProjectCompanyApp extends PureComponent {
               <Route
                 exact
                 path="/company-dashboard"
-                render={(props) => <CompanyDashboard {...props} />}
+                render={(props) => 
+                  <CompanyInfoContext.Consumer>
+                  {({ companyInfo }) => {
+                    return (
+                      <CompanyDashboard {...companyInfo} />
+                    );
+                  }}
+                </CompanyInfoContext.Consumer>
+                
+              }
               />
               <Route
                 exact
