@@ -5,6 +5,7 @@ import Crud from "./Common/Crud.Component";
 import CompanyNavbar from "./Navbars/CompanyNavbar";
 import AdminFooter from "./Footer/AdminFooter";
 import CompanyDashboard from "./Component/Company/Dashboard";
+import CompanyEmpAttendance from "./Component/Company/Attendance";
 import AddEmployee from "./Component/Company/Employee/AddEmployee";
 import EmployeeList from "./Component/Company/Employee/List";
 import { all_employee, destroy_employee } from "./Service/employeeService";
@@ -41,6 +42,20 @@ class ProjectCompanyApp extends PureComponent {
         <div className="p-2">
           <div>
             <Switch>
+              <Route
+                exact
+                path="/company/:companyID/emp-attendance"
+                render={(props) => 
+                  <CompanyInfoContext.Consumer>
+                  {({ companyInfo }) => {
+                    return (
+                      <CompanyEmpAttendance {...companyInfo} />
+                    );
+                  }}
+                </CompanyInfoContext.Consumer>
+                
+              }
+              />
               <Route
                 exact
                 path="/company-dashboard"

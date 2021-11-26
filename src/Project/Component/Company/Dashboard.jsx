@@ -195,7 +195,19 @@ class Dashboard extends Component {
                     </Col>
                     <Col xs="7">
                       <div className="numbers">
-                        <p className="card-category">Attendance</p>
+                      <CompanyInfoContext.Consumer>
+                          {({ companyInfo }) => {
+                            let attendance_url = `company/${companyInfo.id}/emp-attendance`;
+                            return (
+                              <NavLink
+                                to={attendance_url}
+                                className="card-category"
+                              >
+                                <p>Attendance</p>
+                              </NavLink>
+                            );
+                          }}
+                        </CompanyInfoContext.Consumer>
                         <Card.Title as="h4">
                           <p className="badge">{total_attendance_on_day}</p>
                         </Card.Title>
@@ -256,7 +268,6 @@ class Dashboard extends Component {
                         {latest_five_pending_leave_application.length > 0 ? (
                           latest_five_pending_leave_application.map(
                             (e, index) => {
-                              console.log(e);
                               return (
                                 <tr>
                                   <td>
@@ -268,18 +279,18 @@ class Dashboard extends Component {
                                     <p className="badge">{e.name}</p>
                                     <sub>
                                       <Moment format="YYYY/MM/DD">
-                                        {e.current_leave.from_date}
+                                        {e.current_leave?e.current_leave.from_date:""}
                                       </Moment>
                                       -
                                       <Moment format="YYYY/MM/DD">
-                                        {e.current_leave.to_date}
+                                        {e.current_leave?e.current_leave.to_date:""}
                                       </Moment>
                                     </sub>
                                     <p>
-                                      {e.current_leave.leave_message.substring(
+                                      {e.current_leave?e.current_leave.leave_message.substring(
                                         0,
                                         100
-                                      )}
+                                      ):""}
                                     </p>
                                   </td>
                                   <td className="td-actions text-right">

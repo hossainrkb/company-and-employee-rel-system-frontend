@@ -48,6 +48,13 @@ export function approve_leave_application(companyId,leaveId) {
     getCompanyHeaders()
   );
 }
+export function current_month_attendance(companyId,empId) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/current-month-attendance-summary`,
+    null,
+    getCompanyHeaders()
+  );
+}
 export function company_dashboard(id) {
   return http.post(
     `${process.env.REACT_APP_SERVER_URL}/api/company/${id}/dashboard`,
