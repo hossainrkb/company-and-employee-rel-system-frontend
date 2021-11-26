@@ -195,7 +195,7 @@ class Dashboard extends Component {
                     </Col>
                     <Col xs="7">
                       <div className="numbers">
-                      <CompanyInfoContext.Consumer>
+                        <CompanyInfoContext.Consumer>
                           {({ companyInfo }) => {
                             let attendance_url = `company/${companyInfo.id}/emp-attendance`;
                             return (
@@ -235,7 +235,19 @@ class Dashboard extends Component {
                     </Col>
                     <Col xs="7">
                       <div className="numbers">
-                        <p className="card-category">Employee Stat</p>
+                        <CompanyInfoContext.Consumer>
+                          {({ companyInfo }) => {
+                            let emp_stat_url = `company/${companyInfo.id}/emp-stat`;
+                            return (
+                              <NavLink
+                                to={emp_stat_url}
+                                className="card-category"
+                              >
+                                <p className="card-category">Employee Stat</p>
+                              </NavLink>
+                            );
+                          }}
+                        </CompanyInfoContext.Consumer>
                         <Card.Title as="h4">
                           <p className="badge">{total_emp_working_hrs}</p>
                         </Card.Title>
@@ -279,18 +291,24 @@ class Dashboard extends Component {
                                     <p className="badge">{e.name}</p>
                                     <sub>
                                       <Moment format="YYYY/MM/DD">
-                                        {e.current_leave?e.current_leave.from_date:""}
+                                        {e.current_leave
+                                          ? e.current_leave.from_date
+                                          : ""}
                                       </Moment>
                                       -
                                       <Moment format="YYYY/MM/DD">
-                                        {e.current_leave?e.current_leave.to_date:""}
+                                        {e.current_leave
+                                          ? e.current_leave.to_date
+                                          : ""}
                                       </Moment>
                                     </sub>
                                     <p>
-                                      {e.current_leave?e.current_leave.leave_message.substring(
-                                        0,
-                                        100
-                                      ):""}
+                                      {e.current_leave
+                                        ? e.current_leave.leave_message.substring(
+                                            0,
+                                            100
+                                          )
+                                        : ""}
                                     </p>
                                   </td>
                                   <td className="td-actions text-right">

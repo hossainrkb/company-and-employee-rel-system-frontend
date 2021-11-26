@@ -34,21 +34,35 @@ export function destroy_company(id) {
 }
 
 /* From Company panel */
-export function decline_leave_application(companyId,leaveId) {
+export function emp_stat_create(companyId) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/emp-stat/create`,
+    null,
+    getCompanyHeaders()
+  );
+}
+export function emp_stat_details(companyId, empId, month, year) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/${empId}/${month}/${year}/emp-stat-details`,
+    null,
+    getCompanyHeaders()
+  );
+}
+export function decline_leave_application(companyId, leaveId) {
   return http.post(
     `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/leave/${leaveId}/decline`,
     null,
     getCompanyHeaders()
   );
 }
-export function approve_leave_application(companyId,leaveId) {
+export function approve_leave_application(companyId, leaveId) {
   return http.post(
     `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/leave/${leaveId}/approve`,
     null,
     getCompanyHeaders()
   );
 }
-export function current_month_attendance(companyId,empId) {
+export function current_month_attendance(companyId, empId) {
   return http.post(
     `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/current-month-attendance-summary`,
     null,
