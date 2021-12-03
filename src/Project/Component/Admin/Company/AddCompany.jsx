@@ -64,7 +64,7 @@ class AddCompany extends OwnCustomForm {
       if (parseData.status == "ok") {
         let { data: finalData } = parseData;
         this.props.storeCompany(this.state.data, finalData.id);
-        this.props.history.push("/company");
+        this.props.history.push("/admin/company");
       }
     }
   };

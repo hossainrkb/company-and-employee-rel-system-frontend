@@ -31,7 +31,7 @@ function AdminSidebar({ color, image, routes }) {
         </div>
         <Nav>
           <li>
-            <NavLink to="/company"  className="nav-link">
+            <NavLink to="/admin/company"  className="nav-link">
               <i className="fa fa-industry"></i>
               <p>Company</p>
             </NavLink>

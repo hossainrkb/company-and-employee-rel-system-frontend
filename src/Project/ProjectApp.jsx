@@ -10,7 +10,7 @@ import AdminLogin from "./Component/Admin/Login";
 import CompanyLogin from "./Component/Company/Login";
 import { raiseAdminToken, raiseCompanyToken } from "./Service/tokenService";
 import AdminInfoContext from "./Component/Context/AdminInfoContext";
-import CompanyInfoContext from './Component/Context/CompanyInfoContext';
+import CompanyInfoContext from "./Component/Context/CompanyInfoContext";
 
 class ProjectApp extends PureComponent {
   constructor() {
@@ -20,8 +20,19 @@ class ProjectApp extends PureComponent {
       companyInfo: {},
     };
   }
-  async componentDidUpdate() {
-    if (raiseAdminToken()) {
+
+  async componentDidUpdate(prevProps, prevState) {
+    this.HIT_FOR_ADMIN_LOGIN();
+    this.HIT_FOR_COMPANY_LOGIN();
+  }
+
+  componentDidMount() {
+    this.HIT_FOR_ADMIN_LOGIN();
+    this.HIT_FOR_COMPANY_LOGIN();
+  }
+
+  HIT_FOR_ADMIN_LOGIN = async () => {
+    if (raiseAdminToken() && !Object.keys(this.state["adminInfo"]).length) {
       let responseAdmin = await getCurrentAdmin();
       if (
         responseAdmin.data.id != this.state.adminInfo.id ||
@@ -30,7 +41,9 @@ class ProjectApp extends PureComponent {
         this.setState({ adminInfo: responseAdmin.data });
       }
     }
-    if (raiseCompanyToken()) {
+  };
+  HIT_FOR_COMPANY_LOGIN = async () => {
+    if (raiseCompanyToken() && !Object.keys(this.state["companyInfo"]).length) {
       let loginResponseCompany = await getCurrentCompany();
       if (
         loginResponseCompany.data.id != this.state.companyInfo.id ||
@@ -39,7 +52,7 @@ class ProjectApp extends PureComponent {
         this.setState({ companyInfo: loginResponseCompany.data });
       }
     }
-  }
+  };
   handleLogoutAdmin = async () => {
     await logout();
     this.setState({ adminInfo: {} });
@@ -60,22 +73,36 @@ class ProjectApp extends PureComponent {
           </AdminInfoContext.Provider>
         ) : (
           <Route
-            exact
-            path="/admin-login"
-            render={(props) => <AdminLogin {...props} />}
-          />
+          exact
+          path="/admin-login"
+          render={(props) => {
+            if (raiseAdminToken()) {
+              return props.history.push("/admin/company");
+            } else if (raiseCompanyToken()) {
+              return props.history.push("/company-dashboard");
+            } else {
+              return <AdminLogin {...props} />;
+            }
+          }}
+        />
         )}
         {Object.getOwnPropertyNames(companyInfo).length > 0 ? (
           <CompanyInfoContext.Provider value={{ companyInfo: companyInfo }}>
-          <ProjectCompanyApp
-            handleLogoutCompany={this.handleLogoutCompany}
-          />
-           </CompanyInfoContext.Provider>
+            <ProjectCompanyApp handleLogoutCompany={this.handleLogoutCompany} />
+          </CompanyInfoContext.Provider>
         ) : (
           <Route
             exact
             path="/company-login"
-            render={(props) => <CompanyLogin {...props} />}
+            render={(props) => {
+              if (raiseCompanyToken()) {
+                return props.history.push("/company-dashboard");
+              } else if (raiseAdminToken()) {
+                return props.history.push("/admin/dashboard");
+              } else {
+                return <CompanyLogin {...props} />;
+              }
+            }}
           />
         )}
       </>

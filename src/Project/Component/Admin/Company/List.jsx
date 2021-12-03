@@ -6,7 +6,6 @@ import TableBody from "../../../Common/TableBody.Component";
 import Pagination from "../../../Common/Pagination.Component";
 class List extends PureComponent {
   render() {
-    
     let {
       sortedDatas,
       paginateDatas,

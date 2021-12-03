@@ -83,7 +83,7 @@ class ProjectAdminApp extends PureComponent {
                 />
                 <Route
                   exact
-                  path="/company"
+                  path="/admin/company"
                   render={(props) => (
                     <Crud
                       sortColumn={sortColumn}
