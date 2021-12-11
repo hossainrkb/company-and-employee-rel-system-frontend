@@ -1,6 +1,6 @@
 import React, { PureComponent, Component } from "react";
 import { withRouter } from "react-router";
-class Crud extends PureComponent {
+class Crud extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,8 @@ class Crud extends PureComponent {
     this.setState({ datas: updateDatas });
   };
   deleteData = async (e, id) => {
-    let data = await this.props.destroyRow(id);
+    if(!confirm('Are You Sure to Delete?'))return;
+    let {data} = await this.props.destroyEmployee(id);
     if(data.status == "ok"){
       alert(data.message)
       let deletedatas = this.state.datas.filter((e) => e.id != id);
@@ -63,7 +64,6 @@ class Crud extends PureComponent {
     this.setState({ datas: data });
   };
   async componentDidMount () {
-    console.log("DID MOUNT===============>")
     if(this.props.populateBaseArray){
       if (this.props.match.params.documentID) {
         this.setDataToState(await this.props.populateBaseArray(this.props.match.params.documentID))
@@ -72,9 +72,7 @@ class Crud extends PureComponent {
       }
     }
   }
-  componentDidUpdate(){
-    console.log("DID UPDATE===============>")
-  }
+
   render() {
     const { sortColumn, activePage, pageCount } = this.state;
     const sorteddatas = this.sortData();

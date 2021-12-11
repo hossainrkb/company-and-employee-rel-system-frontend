@@ -18,6 +18,8 @@ class ProjectCompanyApp extends PureComponent {
       sortColumn: { column: "name", order: "asc" },
     };
   }
+
+  //Employee Methods
   allEmployee = async (documentID) => {
     let { data } = await all_employee(documentID);
     if (data.status == "ok") {
@@ -25,10 +27,13 @@ class ProjectCompanyApp extends PureComponent {
     }
   };
   destroyEmployee = async (id) => {
-    let { data } = await destroy_employee(id);
-    if (data.status == "ok") {
-      return data;
-    }
+    let {companyInfo:{id:companyId}} = this.props;
+    return await destroy_employee(companyId,id);
+  };
+  editEmployee = async (id) => {
+    this.props.history.push(`/${url}/${id}`);
+    let {companyInfo:{id:companyId}} = this.props;
+    return await destroy_employee(companyId,id);
   };
   render() {
     let columnsEmployee = [
@@ -78,12 +83,33 @@ class ProjectCompanyApp extends PureComponent {
               />
               <Route
                 exact
+                path="/company/:documentID/edit-employee"
+                render={(props) => (
+                  <Crud
+                    sortColumn={sortColumn}
+                    populateBaseArray={this.allEmployee}
+                    destroyEmployee={this.destroyEmployee}
+                  >
+                    {(obj) => {
+                      return (
+                        <AddEmployee
+                          {...props}
+                          {...obj}
+                          storeEmployeeState={obj.storeData}
+                        />
+                      );
+                    }}
+                  </Crud>
+                )}
+              />
+              <Route
+                exact
                 path="/company/:documentID/add-employee"
                 render={(props) => (
                   <Crud
                     sortColumn={sortColumn}
                     populateBaseArray={this.allEmployee}
-                    destroyRow={this.destroyEmployee}
+                    destroyEmployee={this.destroyEmployee}
                   >
                     {(obj) => {
                       console.log(obj);
@@ -105,7 +131,7 @@ class ProjectCompanyApp extends PureComponent {
                   <Crud
                     sortColumn={sortColumn}
                     populateBaseArray={this.allEmployee}
-                    destroyRow={this.destroyEmployee}
+                    destroyEmployee={this.destroyEmployee}
                   >
                     {(obj) => {
                       let actionButtonComapany = [

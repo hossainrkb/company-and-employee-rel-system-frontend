@@ -25,7 +25,7 @@ export function update_employee(company, id) {
 }
 export function destroy_employee(companyID,id) {
   return http.post(
-    `${process.env.REACT_APP_SERVER_URL}/api/admin/${id}/destroy-company`,
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyID}/employee/${id}/delete`,
     null,
     getCompanyHeaders()
   );

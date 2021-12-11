@@ -88,7 +88,7 @@ class ProjectApp extends PureComponent {
         )}
         {Object.getOwnPropertyNames(companyInfo).length > 0 ? (
           <CompanyInfoContext.Provider value={{ companyInfo: companyInfo }}>
-            <ProjectCompanyApp handleLogoutCompany={this.handleLogoutCompany} />
+            <ProjectCompanyApp handleLogoutCompany={this.handleLogoutCompany} companyInfo={companyInfo} />
           </CompanyInfoContext.Provider>
         ) : (
           <Route
