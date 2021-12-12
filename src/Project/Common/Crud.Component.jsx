@@ -21,7 +21,7 @@ class Crud extends Component {
   updateData = (data, id) => {
     let updateDatas = this.state.datas.map((e) => {
       if (e.id == id) {
-        return data;
+        return {...data,id:id};
       } else {
         return e;
       }
@@ -58,7 +58,8 @@ class Crud extends Component {
     return filtered[0];
   };
   editData = (e, id,url) => {
-    this.props.history.push(`/${url}/${id}`);
+   let ultimateurl=url.replace("replaceable", id);
+    this.props.history.push(`/${ultimateurl}`);
   };
   setDataToState = ({data}) => {
     this.setState({ datas: data });

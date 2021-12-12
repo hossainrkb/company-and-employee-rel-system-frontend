@@ -16,10 +16,17 @@ export function add_employee(employee,companyID) {
     getCompanyHeaders()
   );
 }
-export function update_employee(company, id) {
+export function edit_employee(companyID, id) {
   return http.post(
-    `${process.env.REACT_APP_SERVER_URL}/api/admin/${id}/update-company`,
-    company,
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyID}/employee/${id}/edit`,
+    null,
+    getCompanyHeaders()
+  );
+}
+export function update_employee(employee,companyID, id) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyID}/employee/${id}/update`,
+    employee,
     getCompanyHeaders()
   );
 }

@@ -34,7 +34,7 @@ class List extends PureComponent {
                     handleSort={handleSort}
                     sortColumn={sortColumn}
                   />
-                  <TableBody items={paginateDatas} columns={columns} actionButton={actionButton} editUrl="edit-company" />
+                  <TableBody items={paginateDatas} columns={columns} actionButton={actionButton} editUrl={`company/${this.props.match.params.documentID}/replaceable/edit-employee`} />
                 </Table>
                 <Pagination
                   totalItems={

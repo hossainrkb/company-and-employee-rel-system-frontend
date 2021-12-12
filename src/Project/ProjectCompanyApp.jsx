@@ -8,6 +8,7 @@ import CompanyDashboard from "./Component/Company/Dashboard";
 import CompanyEmpAttendance from "./Component/Company/Attendance";
 import EmpStat from "./Component/Company/EmpStat";
 import AddEmployee from "./Component/Company/Employee/AddEmployee";
+import EditEmployee from "./Component/Company/Employee/EditEmployee";
 import EmployeeList from "./Component/Company/Employee/List";
 import { all_employee, destroy_employee } from "./Service/employeeService";
 import CompanyInfoContext from "./Component/Context/CompanyInfoContext";
@@ -30,11 +31,7 @@ class ProjectCompanyApp extends PureComponent {
     let {companyInfo:{id:companyId}} = this.props;
     return await destroy_employee(companyId,id);
   };
-  editEmployee = async (id) => {
-    this.props.history.push(`/${url}/${id}`);
-    let {companyInfo:{id:companyId}} = this.props;
-    return await destroy_employee(companyId,id);
-  };
+
   render() {
     let columnsEmployee = [
       { path: "name", label: "Name", content: (item) => item.name },
@@ -83,7 +80,7 @@ class ProjectCompanyApp extends PureComponent {
               />
               <Route
                 exact
-                path="/company/:documentID/edit-employee"
+                path="/company/:documentID/:employeeID/edit-employee"
                 render={(props) => (
                   <Crud
                     sortColumn={sortColumn}
@@ -92,10 +89,10 @@ class ProjectCompanyApp extends PureComponent {
                   >
                     {(obj) => {
                       return (
-                        <AddEmployee
+                        <EditEmployee
                           {...props}
                           {...obj}
-                          storeEmployeeState={obj.storeData}
+                          updateEmployeeState={obj.updateData}
                         />
                       );
                     }}
