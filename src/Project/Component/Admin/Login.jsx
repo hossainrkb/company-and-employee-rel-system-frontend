@@ -49,11 +49,11 @@ class AdminLogin extends OwnCustomForm {
     let urlencoded = new URLSearchParams();
     urlencoded.append("username", email);
     urlencoded.append("password", password);
-    urlencoded.append("client_id", "2");
+    urlencoded.append("client_id", "5");
     urlencoded.append("scope", "*");
     urlencoded.append(
       "client_secret",
-      "Ub5xxvTcp9WaXi6dFLm1HWnNhxF2bPSXDCb1L9MF"
+      "cxoHvkoQfwhIRvj4GNI48snLLmiEpVV5xFXqxRso"
     );
     urlencoded.append("grant_type", "password");
     let data = await login(urlencoded);

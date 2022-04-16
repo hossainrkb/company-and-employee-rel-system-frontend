@@ -13,10 +13,8 @@ class Crud extends Component {
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
-  storeData = (data,id) => {
-    let parseData = {...data,id:id};
-    let updateDatas = [parseData, ...this.state.datas];
-    this.setState({ datas: updateDatas });
+  storeData = (datas) => {
+    this.setState({ datas });
   };
   updateData = (data, id) => {
     let updateDatas = this.state.datas.map((e) => {

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import { withRouter } from "react-router";
 import OwnCustomForm from "../../../Common/Form";
 import Input from "../../../Common/Input";
-import { add_company,update_company } from "../../../Service/companyService";
+import { add_company, update_company } from "../../../Service/companyService";
 class AddCompany extends OwnCustomForm {
   constructor(props) {
     super(props);
@@ -27,6 +27,7 @@ class AddCompany extends OwnCustomForm {
         subscription_fee: "",
       },
       isUpdateInfo: false,
+      focusFiled: createRef(),
     };
   }
   handleValidation = (name, value) => {
@@ -52,23 +53,28 @@ class AddCompany extends OwnCustomForm {
   };
   doSubmit = async (e) => {
     if (this.props.match.params.id) {
-      let data = await update_company(this.state.data,this.props.match.params.id);
+      let data = await update_company(
+        this.state.data,
+        this.props.match.params.id
+      );
       let { data: parseData } = data;
       if (parseData.status == "ok") {
-      this.props.updateCompany(this.state.data, this.props.match.params.id);
-      this.props.history.push("/company");
+        this.props.updateCompany(this.state.data, this.props.match.params.id);
+        this.props.history.push("/company");
       }
     } else {
       let data = await add_company(this.state.data);
       let { data: parseData } = data;
       if (parseData.status == "ok") {
         let { data: finalData } = parseData;
-        this.props.storeCompany(this.state.data, finalData.id);
+        let { list: allList } = parseData;
+        this.props.storeCompany(allList, finalData.id);
         this.props.history.push("/admin/company");
       }
     }
   };
   componentDidMount() {
+    this.state.focusFiled.current.focus()
     if (this.props.match.params.id) {
       let company = this.props.showCompany(this.props.match.params.id);
       let companyDetail = {
@@ -111,6 +117,7 @@ class AddCompany extends OwnCustomForm {
                     <Row>
                       <Col className="pr-1" md="5">
                         <Input
+                          ref={this.state.focusFiled}
                           type="text"
                           label="Name"
                           id="name"
