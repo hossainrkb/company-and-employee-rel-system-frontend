@@ -32,6 +32,13 @@ export function destroy_company(id) {
     getAdminHeaders()
   );
 }
+export function edit_company(id) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/admin/${id}/edit-company`,
+    null,
+    getAdminHeaders()
+  );
+}
 
 /* From Company panel */
 export function emp_stat_create(companyId) {

@@ -5,7 +5,7 @@ import TableHeader from "../../../Common/TableHeader.Component";
 import TableBody from "../../../Common/TableBody.Component";
 import LoadMore from "../../../Common/LoadMore.Component";
 import { all_company, destroy_company } from "../../../Service/companyService";
-const CompanyList = () => {
+const CompanyList = (props) => {
   const [company_list, setCompany] = useState([]);
   const [default_active_page, setActivepage] = useState(1);
   const [default_page_count, setPageCount] = useState(5);
@@ -22,6 +22,9 @@ const CompanyList = () => {
     }
   }, []);
  
+  const editCompany = (e,id) => {
+    props.history.push(`/edit-company/${id}`);
+  };
   const deleteCompany = async (e,id) => {
     if(!confirm('Are You Sure ? ')) return;
     let destroy_company_response = await destroy_company(id);
@@ -64,14 +67,13 @@ const CompanyList = () => {
     { path: "Action", label: "Action" },
   ];
   let actionButtonComapany = [
-    {},
-    // {
-    //   edit: {
-    //     icon: "fa fa-edit",
-    //     className: "text-info",
-    //     onclickHandle: obj.editData,
-    //   },
-    // },
+    {
+      edit: {
+        icon: "fa fa-edit",
+        className: "text-info",
+        onclickHandle: editCompany,
+      },
+    },
     {
       delete: {
         icon: "fa fa-trash",

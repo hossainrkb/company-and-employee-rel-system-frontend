@@ -9,6 +9,7 @@ import sidebarImage from "assets/img/sidebar-3.jpg";
 import AddCompany from "./Component/Admin/Company/AddCompany";
 import CompanyList from "./Component/Admin/Company/CompanyList";
 import { all_company, destroy_company } from "./Service/companyService";
+import EditCompany from "./Component/Admin/Company/EditCompany";
 
 class ProjectAdminApp extends PureComponent {
   constructor() {
@@ -50,19 +51,7 @@ class ProjectAdminApp extends PureComponent {
                 <Route
                   exact
                   path="/edit-company/:id"
-                  render={(props) => (
-                    <Crud>
-                      {(obj) => {
-                        return (
-                          <AddCompany
-                            {...props}
-                            showCompany={obj.showData}
-                            updateCompany={obj.updateData}
-                          />
-                        );
-                      }}
-                    </Crud>
-                  )}
+                  render={(props) => <EditCompany {...props} />}
                 />
                 <Route
                   exact

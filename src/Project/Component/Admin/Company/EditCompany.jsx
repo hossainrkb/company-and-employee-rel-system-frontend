@@ -3,8 +3,8 @@ import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import { withRouter } from "react-router";
 import OwnCustomForm from "../../../Common/Form";
 import Input from "../../../Common/Input";
-import { add_company, update_company } from "../../../Service/companyService";
-class AddCompany extends OwnCustomForm {
+import { add_company, update_company,edit_company } from "../../../Service/companyService";
+class EditCompany extends OwnCustomForm {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +26,7 @@ class AddCompany extends OwnCustomForm {
         subscription_end: "",
         subscription_fee: "",
       },
+      isUpdateInfo: false,
       focusFiled: createRef(),
     };
   }
@@ -51,29 +52,37 @@ class AddCompany extends OwnCustomForm {
     return "";
   };
   doSubmit = async (e) => {
-    if (this.props.match.params.id) {
+
       let data = await update_company(
         this.state.data,
         this.props.match.params.id
       );
       let { data: parseData } = data;
       if (parseData.status == "ok") {
-        this.props.updateCompany(this.state.data, this.props.match.params.id);
-        this.props.history.push("/company");
-      }
-    } else {
-      let data = await add_company(this.state.data);
-      let { data: parseData } = data;
-      if (parseData.status == "ok") {
-        let { data: finalData } = parseData;
-        let { list: allList } = parseData;
-        this.props.storeCompany(allList, finalData.id);
         this.props.history.push("/admin/company");
       }
-    }
+    
   };
-  componentDidMount() {
+  async componentDidMount() {
     this.state.focusFiled.current.focus()
+    if (this.props.match.params.id) {
+      let company_response = await edit_company(this.props.match.params.id);
+      let {data:company} = company_response; 
+      if(company.status && company.status =='ok'){
+    let companyDetail = {
+        id: this.props.match.params.id,
+        name: company.data.name,
+        username: company.data.username,
+        password: '',
+        email: company.data.email,
+        subscription_start: "",
+        subscription_end: "",
+        subscription_fee: "",
+      };
+      this.setState({ data: companyDetail, isUpdateInfo: true });
+      }
+  
+    }
   }
   render() {
     const {
@@ -212,4 +221,4 @@ class AddCompany extends OwnCustomForm {
     );
   }
 }
-export default withRouter(AddCompany);
+export default withRouter(EditCompany);
