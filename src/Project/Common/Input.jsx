@@ -1,6 +1,6 @@
 import React from "react";
 const Input = React.forwardRef(
-  ({ type, value, name, onChange, id, label, errors }, ref) => {
+  ({ type, value, name, onChange, id, label, errors,placeholder }, ref) => {
     return (
       <>
         <label htmlFor={id} className="form-label">
@@ -10,6 +10,7 @@ const Input = React.forwardRef(
           ref = {ref}
           type={type}
           onChange={onChange}
+          placeholder={placeholder?placeholder:""}
           value={value}
           className="form-control"
           id={id}

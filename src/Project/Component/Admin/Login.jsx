@@ -1,11 +1,11 @@
-import React from "react";
+import React, { createRef } from "react";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 
 import OwnCustomForm from "../../Common/Form";
 import Input from "../../Common/Input";
 import { login } from "../../Service/adminService";
 import AdminLoginCredentialContext from "../../Common/AdminLoginCredentialContext";
-const AdminLoginCredentialContextObj = new AdminLoginCredentialContext
+const AdminLoginCredentialContextObj = new AdminLoginCredentialContext();
 class AdminLogin extends OwnCustomForm {
   constructor(props) {
     super(props);
@@ -18,6 +18,7 @@ class AdminLogin extends OwnCustomForm {
         password: "",
         email: "",
       },
+      focusFiled: createRef(),
     };
   }
   handleValidation = (name, value) => {
@@ -58,9 +59,15 @@ class AdminLogin extends OwnCustomForm {
     urlencoded.append("grant_type", "password");
     let data = await login(urlencoded);
     let setToken = AdminLoginCredentialContextObj.SetToken({ token: data });
-    // window.location = "/company";
-    this.props.history.push("admin/company")
+    if (setToken) {
+      this.props.history.push("admin/company");
+    } else {
+      alert("Token not set into context");
+    }
   };
+  componentDidMount() {
+    this.state.focusFiled.current.focus();
+  }
   render() {
     const { password, email } = this.state.data;
     const { errors } = this.state;
@@ -79,8 +86,10 @@ class AdminLogin extends OwnCustomForm {
                     <Row>
                       <Col md="12">
                         <Input
+                          ref={this.state.focusFiled}
                           type="email"
                           label="Email address"
+                          placeholder="Enter Email.."
                           id="email"
                           name="email"
                           value={email}
@@ -94,6 +103,7 @@ class AdminLogin extends OwnCustomForm {
                         <Input
                           type="password"
                           label="Password"
+                          placeholder="Enter Password.."
                           id="password"
                           name="password"
                           value={password}
