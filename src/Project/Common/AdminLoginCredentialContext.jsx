@@ -1,6 +1,6 @@
 class AdminLoginCredentialContext {
-  value = null;
-  SetToken = (value) => {
+  static value = null;
+ static SetToken = (value) => {
     if (this.GetToken() ==null) {
       this.value = value;
       return true;
@@ -8,7 +8,7 @@ class AdminLoginCredentialContext {
       return false;
     }
   };
-  GetToken = () => {
+  static GetToken = () => {
     return this.value;
   };
 }

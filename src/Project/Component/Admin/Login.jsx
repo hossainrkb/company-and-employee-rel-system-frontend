@@ -5,7 +5,6 @@ import OwnCustomForm from "../../Common/Form";
 import Input from "../../Common/Input";
 import { login } from "../../Service/adminService";
 import AdminLoginCredentialContext from "../../Common/AdminLoginCredentialContext";
-const AdminLoginCredentialContextObj = new AdminLoginCredentialContext();
 class AdminLogin extends OwnCustomForm {
   constructor(props) {
     super(props);
@@ -58,7 +57,7 @@ class AdminLogin extends OwnCustomForm {
     );
     urlencoded.append("grant_type", "password");
     let data = await login(urlencoded);
-    let setToken = AdminLoginCredentialContextObj.SetToken({ token: data });
+    let setToken = AdminLoginCredentialContext.SetToken({ token: data });
     if (setToken) {
       this.props.history.push("admin/company");
     } else {

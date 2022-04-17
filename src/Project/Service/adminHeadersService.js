@@ -1,12 +1,13 @@
 import AdminLoginCredentialContext from "../Common/AdminLoginCredentialContext";
 import {raiseAdminToken} from './tokenService';
-const AdminLoginCredentialContextObj = new AdminLoginCredentialContext
 export function getAdminHeaders(){
     let token = null;
-    if(AdminLoginCredentialContextObj.GetToken()!=null){
-      token = (AdminLoginCredentialContextObj.GetToken()).token
+    let ALC = AdminLoginCredentialContext;
+    if(ALC.GetToken()!=null){
+      token = (ALC.GetToken()).token
     }else{
       token = raiseAdminToken()
+      AdminLoginCredentialContext.SetToken({ token });
     }
     let header = {
       headers:{
