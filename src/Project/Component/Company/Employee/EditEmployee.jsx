@@ -1,41 +1,102 @@
 import React, { Component } from "react";
+import Form from "Project/Common/Form";
+import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import { withRouter } from "react-router";
-import { add_employee, edit_employee,update_employee } from "../../../Service/employeeService";
-import EmployeeLoadIntoDB from "./RenderProps/EmployeeLoadIntoDB";
-class EditEmployee extends Component {
+import {
+  edit_employee,
+  update_employee,
+} from "../../../Service/employeeService";
+import EmployeeDefaultForm from "./EmployeeDefaultForm";
+class EditEmployee extends Form {
   constructor(props) {
     super(props);
     this.state = {
+      data: {
+        name: "",
+        password: "",
+        email: "",
+      },
+      errors: {
+        name: "",
+        password: "",
+        email: "",
+      },
     };
   }
-  updateEmployeeIntoDB = async (empData,id) => {
-    let data = await update_employee(empData, this.props.match.params.documentID,id);
+  handleValidation = (name, value) => {
+    if (name == "email") {
+      if (value.trim() == "") return "Employee email must not be empty";
+    }
+    if (name == "name") {
+      if (value.trim() == "") return "Employee Name must not be empty";
+    }
+    if (name == "password") {
+      if (value.trim() == "") return "Password field must not be empty";
+    }
+    return "";
+  };
+  doSubmit = async (e) => {
+    let { documentID: company_id, employeeID: employee_id } =
+      this.props.match.params;
+    let data = await update_employee(this.state.data, company_id, employee_id);
     let { data: parseData } = data;
-    if (parseData.status == "ok") {
-      let { data: finalData } = parseData;
-      this.props.updateEmployeeState(empData, finalData.id);
-      this.props.history.push(
-        `/company/${this.props.match.params.documentID}/employee`
-      );
+    if (parseData.status && parseData.status == "ok") {
+      this.props.history.push(`/company/${company_id}/employee`);
+    } else if (parseData.status && parseData.status == "error") {
+      alert(parseData.message);
     }
   };
-  editEmployee = async () => {
-    return await edit_employee(
-      this.props.match.params.documentID,
-      this.props.match.params.employeeID
-    );
-   
-  };
-
+  async componentDidMount() {
+    let { documentID: company_id, employeeID: employee_id } =
+      this.props.match.params;
+    let { data } = await edit_employee(company_id, employee_id);
+    if (data && data.status && data.status == "ok") {
+      let employee = data.data;
+      let updatedPrevEmp = {
+        ...this.state.data,
+        email: employee.email,
+        name: employee.name,
+        password: employee.password,
+      };
+      this.setState({
+        data: updatedPrevEmp,
+      });
+    }
+  }
   render() {
+    const { name, email, password } = this.state.data;
+    const { errors } = this.state;
     return (
-      <>
-        <EmployeeLoadIntoDB
-          storeMethod={this.updateEmployeeIntoDB}
-          editEmployee={this.editEmployee}
-          {...this.props}
-        />
-      </>
+      <Container fluid>
+        <Card className="p-2">
+         <Row>
+           <Col md="12">
+            <Card.Title as="h4">Update Employee</Card.Title>
+           </Col>
+         </Row>
+          <form onSubmit={this.handleFormSubmit}>
+            <EmployeeDefaultForm
+              password={password}
+              email={email}
+              name={name}
+              errors={errors}
+              handleOnChange={this.handleOnChange}
+            />
+            <Row>
+              <Col md="12">
+                <Button
+                  className="btn-fill pull-right"
+                  type="submit"
+                  variant="info"
+                >
+                  Update Employee
+                </Button>
+              </Col>
+            </Row>
+            <div className="clearfix"></div>
+          </form>
+        </Card>
+      </Container>
     );
   }
 }
