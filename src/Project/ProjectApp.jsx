@@ -60,7 +60,9 @@ class ProjectApp extends PureComponent {
     this.props.history.push(`/admin-login`);
   };
   handleLogoutCompany = async () => {
-    await logout();
+    let {companyInfo} = this.state;
+    await cpmapanyLogout(companyInfo.id);
+    localStorage.removeItem("accessTokenCompany");
     this.setState({ companyInfo: {} });
     this.props.history.push(`/company-login`);
   };

@@ -1,6 +1,7 @@
 import http from "./httpService";
 import { getAdminHeaders } from "./adminHeadersService";
 import { getCompanyHeaders } from "./companyHeadersService";
+import CompanyLoginCredentialContext from "../Common/CompanyLoginCredentialContext";
 require("dotenv").config();
 
 /* From Admin panel */
@@ -91,7 +92,6 @@ export async function login(company) {
       `${process.env.REACT_APP_SERVER_URL}/oauth/token`,
       company
     );
-    localStorage.setItem("accessTokenCompany", access_token);
     return Promise.resolve(access_token);
   } catch (error) {
     return Promise.reject(error);
@@ -118,11 +118,11 @@ export async function getCurrentCompany() {
     return Promise.reject(error);
   }
 }
-export async function logout() {
+export async function cpmapanyLogout(id) {
   try {
-    localStorage.removeItem("accessTokenCompany");
+    CompanyLoginCredentialContext.SetToken(null);
     return await http.post(
-      `${process.env.REACT_APP_SERVER_URL}/api/company/logout`
+      `${process.env.REACT_APP_SERVER_URL}/api/company/${id}/logout`,null, getCompanyHeaders()
     );
   } catch (error) {
     return null;
