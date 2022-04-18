@@ -1,4 +1,6 @@
 import React from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import {
   emp_stat_create,
@@ -6,8 +8,16 @@ import {
 } from "../../Service/companyService";
 import Pagination from "../../Common/Pagination.Component";
 let emp_profile_style = {
-  fontSize: "10px",
+  fontSize: "13px",
   margin: "0px",
+};
+let custom_button_css = {
+  padding: "7px 35px",
+  marginTop: "25px",
+  border: "1px solid #1DC7EA",
+  backgroundColor: "#1DC7EA",
+  color: "#fff",
+  borderRadius: "3px",
 };
 class EmpStat extends React.Component {
   constructor(props) {
@@ -25,46 +35,41 @@ class EmpStat extends React.Component {
       search_emp_record: {},
       record_keys: [],
       employees: [],
-      month: {},
-      year: [],
-      selectedMonth: "",
-      selectedYear: "",
+      selectEmp: "",
       total_leave_application: "",
       total_approved_leave_application: "",
       total_decline_leave_application: "",
       total_pending_leave_application: "",
+      yearMonthDate: new Date(),
     };
   }
-  handleValidation = (name, value) => {
-    if (name == "email") {
-      if (value.trim() == "") return "Email must not be empty";
-    }
-    return "";
+  setYearMonthDate = (date) => {
+    this.setState({ yearMonthDate: date });
   };
-  handleOnClick = (e, target, value) => {
-    this.setState({ [target]: value });
+  handleEmpSelect = (e) => {
+    let value = e.target.value;
+    this.setState({ selectEmp: value });
   };
-  handleOnChange = async (e) => {
-    let { selectedMonth, selectedYear } = this.state;
-    const email = e.target.value;
-    let errors = { ...this.state.errors };
-    if (selectedMonth == "") {
-      errors["month"] = "Month Not Select";
-      return this.setState({ errors });
+  handleEmployeeSearch = async () => {
+    let { yearMonthDate, selectEmp } = this.state;
+    if (!yearMonthDate) {
+      alert("Month Year Filed is not Valid");
+      return;
     }
-    if (selectedYear == "") {
-      errors["year"] = "Year Not Select";
-      return this.setState({ errors });
+    if (!selectEmp) {
+      alert("Emp is not Valid");
+      return;
     }
-    if (email == "") {
-      errors["email"] = "Email Not Select";
-      return this.setState({ errors });
-    }
+    let month =
+      yearMonthDate.getMonth().toString().length == 1
+        ? `0${yearMonthDate.getMonth()}`
+        : yearMonthDate.getMonth();
+    let year = yearMonthDate.getFullYear();
     let { data } = await emp_stat_details(
       this.props.id,
-      email,
-      selectedMonth,
-      selectedYear
+      selectEmp,
+      ++month,
+      year
     );
     let {
       data: { employee },
@@ -73,16 +78,24 @@ class EmpStat extends React.Component {
       data: { records },
     } = data;
     let {
-      data: {  leave_application:{total_decline_leave_application} },
+      data: {
+        leave_application: { total_decline_leave_application },
+      },
     } = data;
     let {
-      data: {  leave_application:{total_approved_leave_application} },
+      data: {
+        leave_application: { total_approved_leave_application },
+      },
     } = data;
     let {
-      data: {  leave_application:{total_leave_application} },
+      data: {
+        leave_application: { total_leave_application },
+      },
     } = data;
     let {
-      data: {  leave_application:{total_pending_leave_application} },
+      data: {
+        leave_application: { total_pending_leave_application },
+      },
     } = data;
     this.setState({
       search_emp: employee,
@@ -94,22 +107,14 @@ class EmpStat extends React.Component {
       total_pending_leave_application: total_pending_leave_application,
     });
   };
+
   async componentDidMount() {
     let { data } = await emp_stat_create(this.props.id);
     if (data.status == "ok") {
       let {
-        data: { month },
-      } = data;
-      let {
-        data: { year },
-      } = data;
-      let {
         data: { employees },
       } = data;
-    
       this.setState({
-        month: month,
-        year: year,
         employees: employees,
       });
     }
@@ -130,10 +135,6 @@ class EmpStat extends React.Component {
       errors,
       search_emp,
       search_emp_record,
-      month,
-      year,
-      selectedMonth,
-      selectedYear,
       employees,
       record_keys,
       pageCount,
@@ -150,62 +151,43 @@ class EmpStat extends React.Component {
           <Row>
             <Col lg="12" sm="12">
               <Card className="card-stats">
+                <div className="px-2 py-2">Employee Status</div>
                 <Card.Body>
                   <Row>
-                    <Col xs="4">
-                      <Card.Title>
-                        <p className="badge">Year</p>
-                        <div>
-                          {year.map((e) => {
-                            return (
-                              <div
-                                className={
-                                  selectedYear == e
-                                    ? "float-left bg-warning text-white btn btn-lg"
-                                    : "float-left bg-info text-white btn btn-lg"
-                                }
-                                style={{
-                                  border: "1px solid white",
-                                  padding: selectedYear == e ? "10px" : "5px",
-                                  cursor: "pointer",
-                                }}
-                                onClick={(field) =>
-                                  this.handleOnClick(field, "selectedYear", e)
-                                }
-                              >
-                                {e}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </Card.Title>
+                    <Col md="1"></Col>
+                    <Col md="4">
+                      <div>Month - Year</div>
+                      <DatePicker
+                        required
+                        dateFormat="MMMM yyyy"
+                        showMonthYearPicker
+                        className="form-control"
+                        selected={this.state.yearMonthDate}
+                        onChange={(date) => this.setYearMonthDate(date)}
+                      />
                     </Col>
-                    <Col xs="8">
-                      <Card.Title>
-                        <p className="badge">Month</p>
-                        <div>
-                          {Object.keys(month).map((e) => {
-                            return (
-                              <div
-                                className={
-                                  selectedMonth == e
-                                    ? "float-left bg-warning text-white btn btn-md"
-                                    : "float-left bg-info text-white btn btn-md"
-                                }
-                                style={{
-                                  border: "1px solid white",
-                                  padding: selectedMonth == e ? "10px" : "5px",
-                                }}
-                                onClick={(field) =>
-                                  this.handleOnClick(field, "selectedMonth", e)
-                                }
-                              >
-                                {e}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </Card.Title>
+                    <Col md="4">
+                      <div>Employee</div>
+                      <select
+                        className="form-control"
+                        onChange={(e) => {
+                          this.handleEmpSelect(e);
+                        }}
+                        required
+                      >
+                        <option value="">Select Employee</option>
+                        {employees.map((e) => {
+                          return <option value={e.id}>{e.email}</option>;
+                        })}
+                      </select>
+                    </Col>
+                    <Col md="2">
+                      <button
+                        style={custom_button_css}
+                        onClick={() => this.handleEmployeeSearch()}
+                      >
+                        Search
+                      </button>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -213,143 +195,137 @@ class EmpStat extends React.Component {
               </Card>
             </Col>
           </Row>
+          {Object.keys(search_emp).length > 0 ? (
           <Row>
             <Col lg="12" sm="12">
               <Card className="card-stats p-2">
+                <div>Employee Details</div>
                 <Card.Body>
                   <Row>
-                    <Col xs="8">
-                      <p>Emp Stat</p>
-                      {Object.keys(search_emp).length > 0 ? (
-                        <>
-                          <p style={emp_profile_style}>{search_emp.name}</p>
-                          <p style={emp_profile_style}>{search_emp.email}</p>
-                          <p style={emp_profile_style}>
-                            {search_emp.company.name}
-                          </p>
-                        </>
-                      ) : (
-                        ""
-                      )}
+                    <Col xs="3">
+                      <Card className="p-2">
+                        <div>Profile</div>
+                        <hr />
+                        {Object.keys(search_emp).length > 0 ? (
+                          <>
+                            <p style={emp_profile_style}>
+                              Name- {search_emp.name}
+                            </p>
+                            <p style={emp_profile_style}>
+                              Email- {search_emp.email}
+                            </p>
+                            <p style={emp_profile_style}>
+                              Comapny Name- {search_emp.company.name}
+                            </p>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </Card>
+                      <Card className="p-2">
+                        <div>Leave Status</div>
+                        <hr />
+                        {Object.keys(search_emp).length > 0 ? (
+                          <>
+                            <p style={emp_profile_style}>
+                              Leave Application - {total_leave_application}
+                            </p>
+                            <p style={emp_profile_style}>
+                              Approved - {total_approved_leave_application}
+                            </p>
+                            <p style={emp_profile_style}>
+                              Declined - {total_decline_leave_application}
+                            </p>
+                            <p style={emp_profile_style}>
+                              Pending - {total_pending_leave_application}
+                            </p>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </Card>
                     </Col>
-                    <Col xs="4">
-                      <Card.Title>
-                        <p>Employees</p>
-                        <div>
-                          <form>
-                            <select
-                              className="form-control"
-                              onChange={this.handleOnChange}
-                            >
-                              <option value="">Select Employee</option>
-                              {employees.map((e) => {
-                                return <option value={e.id}>{e.email}</option>;
-                              })}
-                            </select>
-                          </form>
+                    <Col xs="9">
+                      <Card className="p-2">
+                        <div>Attendance</div>
+                        <hr />
+                        <div className="table-responsive">
+                          <table className="table text-center">
+                            <tr>
+                              <td>Day</td>
+                              <td>Attend</td>
+                              <td>Check In On</td>
+                              <td>Check Out On</td>
+                              <td>Total Hrs</td>
+                              <td>Total Mins</td>
+                              <td>Total Seconds</td>
+                            </tr>
+                            {paginateDatas.length > 0
+                              ? paginateDatas.map((e) => {
+                                  return (
+                                    <tr>
+                                      <td>
+                                        <p style={emp_profile_style}>
+                                          {search_emp_record[e].date}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        {search_emp_record[e].checkIn ? (
+                                          <i
+                                            className="fas fa-check text-info"
+                                            title="Check In"
+                                          ></i>
+                                        ) : (
+                                          <i
+                                            className="fas fa-times text-warning"
+                                            title="Absent"
+                                          ></i>
+                                        )}
+                                      </td>
+                                      <td>
+                                        <p style={emp_profile_style}>
+                                          {search_emp_record[e].checkIn}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p style={emp_profile_style}>
+                                          {search_emp_record[e].checkOut}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p style={emp_profile_style}>
+                                          {search_emp_record[e].dayTotalHours}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p style={emp_profile_style}>
+                                          {search_emp_record[e].dayTotalMin}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p style={emp_profile_style}>
+                                          {search_emp_record[e].dayTotalSecond}
+                                        </p>
+                                      </td>
+                                    </tr>
+                                  );
+                                })
+                              : ""}
+                          </table>
+                          <Pagination
+                            totalItems={record_keys.length}
+                            pageCount={pageCount}
+                            activePage={activePage}
+                            handleClickePage={this.handleClickePaginationPage}
+                          />
                         </div>
-                      </Card.Title>
+                      </Card>
                     </Col>
                   </Row>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
-          {Object.keys(search_emp).length > 0 ? (
-            <Row>
-              <Col xs="4">
-                <Card className="card-stats p-2">
-                  <Card.Body>
-                    <p>Emp Leave Stat</p>
-                    <>
-                      <p style={emp_profile_style}>Leave Application - {total_leave_application}</p>
-                      <p style={emp_profile_style}>Approved - {total_approved_leave_application}</p>
-                      <p style={emp_profile_style}>Declined - {total_decline_leave_application}</p>
-                      <p style={emp_profile_style}>Pending - {total_pending_leave_application}</p>
-                      
-                    </>
-                  </Card.Body>
-                </Card>
-              </Col>
-
-              <Col xs="8">
-                <Card className="card-stats p-2">
-                  <Card.Body>
-                    <p>Attendance Details</p>
-                    <div className="table-responsive">
-                      <table className="table text-center">
-                        <tr>
-                          <td>Day</td>
-                          <td>Attend</td>
-                          <td>Check In On</td>
-                          <td>Check Out On</td>
-                          <td>Total Hrs</td>
-                          <td>Total Mins</td>
-                          <td>Total Seconds</td>
-                        </tr>
-                        {paginateDatas.length > 0
-                          ? paginateDatas.map((e) => {
-                              return (
-                                <tr>
-                                  <td>
-                                    <p style={emp_profile_style}>
-                                      {search_emp_record[e].date}
-                                    </p>
-                                  </td>
-                                  <td>
-                                    {search_emp_record[e].checkIn ? (
-                                      <i
-                                        className="fas fa-check text-info"
-                                        title="Check In"
-                                      ></i>
-                                    ) : (
-                                      <i
-                                        className="fas fa-times text-warning"
-                                        title="Absent"
-                                      ></i>
-                                    )}
-                                  </td>
-                                  <td>
-                                    <p style={emp_profile_style}>
-                                      {search_emp_record[e].checkIn}
-                                    </p>
-                                  </td>
-                                  <td>
-                                    <p style={emp_profile_style}>
-                                      {search_emp_record[e].checkOut}
-                                    </p>
-                                  </td>
-                                  <td>
-                                    <p style={emp_profile_style}>
-                                      {search_emp_record[e].dayTotalHours}
-                                    </p>
-                                  </td>
-                                  <td>
-                                    <p style={emp_profile_style}>
-                                      {search_emp_record[e].dayTotalMin}
-                                    </p>
-                                  </td>
-                                  <td>
-                                    <p style={emp_profile_style}>
-                                      {search_emp_record[e].dayTotalSecond}
-                                    </p>
-                                  </td>
-                                </tr>
-                              );
-                            })
-                          : ""}
-                      </table>
-                      <Pagination
-                        totalItems={record_keys.length}
-                        pageCount={pageCount}
-                        activePage={activePage}
-                        handleClickePage={this.handleClickePaginationPage}
-                      />
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
           ) : (
             ""
           )}
