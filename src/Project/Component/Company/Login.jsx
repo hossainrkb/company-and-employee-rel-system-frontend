@@ -3,6 +3,7 @@ import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import OwnCustomForm from "../../Common/Form";
 import Input from "../../Common/Input";
 import { login } from "../../Service/companyService";
+import CompanyLoginCredentialContext from "../../Common/CompanyLoginCredentialContext";
 class CompanyLogin extends OwnCustomForm {
   constructor(props) {
     super(props);
@@ -54,7 +55,13 @@ class CompanyLogin extends OwnCustomForm {
     );
     urlencoded.append("grant_type", "password");
     let data = await login(urlencoded);
-    this.props.history.push("/company-dashboard")
+    let setToken = CompanyLoginCredentialContext.SetToken({ token: data });
+    if (setToken) {
+      localStorage.setItem("accessTokenCompany", data);
+      this.props.history.push("/company-dashboard")
+    } else {
+      alert("Token not set into context");
+    }
   };
   render() {
     const { password, email } = this.state.data;
