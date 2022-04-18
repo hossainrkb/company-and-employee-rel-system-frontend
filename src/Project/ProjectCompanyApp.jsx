@@ -9,39 +9,17 @@ import CompanyEmpAttendance from "./Component/Company/Attendance";
 import EmpStat from "./Component/Company/EmpStat";
 import AddEmployee from "./Component/Company/Employee/AddEmployee";
 import EditEmployee from "./Component/Company/Employee/EditEmployee";
-import EmployeeList from "./Component/Company/Employee/List";
+import EmployeeList from "./Component/Company/Employee/EmployeeList";
 import { all_employee, destroy_employee } from "./Service/employeeService";
 import CompanyInfoContext from "./Component/Context/CompanyInfoContext";
 class ProjectCompanyApp extends PureComponent {
   constructor() {
     super();
-    this.state = {
-      sortColumn: { column: "name", order: "asc" },
-    };
   }
-
-  //Employee Methods
-  allEmployee = async (documentID) => {
-    let { data } = await all_employee(documentID);
-    if (data.status == "ok") {
-      return { data: data.data.employees };
-    }
-  };
-  destroyEmployee = async (id) => {
-    let {companyInfo:{id:companyId}} = this.props;
-    return await destroy_employee(companyId,id);
-  };
-
   render() {
-    let columnsEmployee = [
-      { path: "name", label: "Name", content: (item) => item.name },
-      { path: "email", label: "Email", content: (item) => item.email },
-      { path: "Action", label: "Action" },
-    ];
-    const { sortColumn } = this.state;
     return (
       <div>
-        <CompanyNavbar />
+        <CompanyNavbar handleLogoutCompany={this.props.handleLogoutCompany} />
         <div className="p-2">
           <div>
             <Switch>
@@ -70,92 +48,22 @@ class ProjectCompanyApp extends PureComponent {
               <Route
                 exact
                 path="/company-dashboard"
-                render={(props) => (
-                  <CompanyInfoContext.Consumer>
-                    {({ companyInfo }) => {
-                      return <CompanyDashboard {...companyInfo} />;
-                    }}
-                  </CompanyInfoContext.Consumer>
-                )}
+                render={(props) => <CompanyDashboard {...props} />}
               />
               <Route
                 exact
                 path="/company/:documentID/:employeeID/edit-employee"
-                render={(props) => (
-                  <Crud
-                    sortColumn={sortColumn}
-                    populateBaseArray={this.allEmployee}
-                    destroyEmployee={this.destroyEmployee}
-                  >
-                    {(obj) => {
-                      return (
-                        <EditEmployee
-                          {...props}
-                          {...obj}
-                          updateEmployeeState={obj.updateData}
-                        />
-                      );
-                    }}
-                  </Crud>
-                )}
+                render={(props) => <EditEmployee {...props} />}
               />
               <Route
                 exact
                 path="/company/:documentID/add-employee"
-                render={(props) => (
-                  <Crud
-                    sortColumn={sortColumn}
-                    populateBaseArray={this.allEmployee}
-                    destroyEmployee={this.destroyEmployee}
-                  >
-                    {(obj) => {
-                      console.log(obj);
-                      return (
-                        <AddEmployee
-                          {...props}
-                          {...obj}
-                          storeEmployeeState={obj.storeData}
-                        />
-                      );
-                    }}
-                  </Crud>
-                )}
+                render={(props) => <AddEmployee {...props} />}
               />
               <Route
                 exact
                 path="/company/:documentID/employee"
-                render={(props) => (
-                  <Crud
-                    sortColumn={sortColumn}
-                    populateBaseArray={this.allEmployee}
-                    destroyEmployee={this.destroyEmployee}
-                  >
-                    {(obj) => {
-                      let actionButtonComapany = [
-                        {
-                          edit: {
-                            icon: "fa fa-edit",
-                            className: "text-info",
-                            onclickHandle: obj.editData,
-                          },
-                        },
-                        {
-                          delete: {
-                            icon: "fa fa-trash",
-                            className: "text-danger",
-                            onclickHandle: obj.deleteData,
-                          },
-                        },
-                      ];
-                      let new_obj = {
-                        ...obj,
-                        columns: columnsEmployee,
-                        actionButton: actionButtonComapany,
-                      };
-                      return <EmployeeList {...props} {...new_obj} />;
-                    }}
-                  </Crud>
-                )}
+                render={(props) => <EmployeeList {...props} />}
               />
             </Switch>
           </div>
