@@ -58,6 +58,14 @@ class ProjectAdminApp extends PureComponent {
                   path="/admin/company"
                   render={(props) => <CompanyList {...props} />}
                 />
+                <Route
+                  exact
+                  path="/not-found"
+                  render={() => {
+                    alert("Not Found");
+                  }}
+                />
+                <Redirect to="/not-found" />
               </Switch>
             </div>
             <AdminFooter />
