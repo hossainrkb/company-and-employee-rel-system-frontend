@@ -43,8 +43,7 @@ class EmpAttendance extends React.Component {
                 <Card.Body>
                   <Row>
                     <Col xs="12">
-                      <Card.Title>
-                        <p className="badge">Attendance Current</p>
+                        <p >Attendance Current</p>
                         {Object.keys(records).length > 0 ? (
                           <div style={{ overflow: "auto" }}>
                             {Object.keys(records).length > 0 ? (
@@ -110,7 +109,6 @@ class EmpAttendance extends React.Component {
                         ) : (
                           ""
                         )}
-                      </Card.Title>
                     </Col>
                   </Row>
                 </Card.Body>
