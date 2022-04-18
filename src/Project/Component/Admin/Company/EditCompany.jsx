@@ -30,7 +30,6 @@ class EditCompany extends OwnCustomForm {
         subscription_end: "",
         subscription_fee: "",
       },
-      isUpdateInfo: false,
     };
   }
   handleValidation = (name, value) => {
@@ -79,7 +78,7 @@ class EditCompany extends OwnCustomForm {
           subscription_end: "",
           subscription_fee: "",
         };
-        this.setState({ data: companyDetail, isUpdateInfo: true });
+        this.setState({ data: companyDetail });
       }
     }
   }

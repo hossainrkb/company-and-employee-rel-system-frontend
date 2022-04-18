@@ -50,26 +50,11 @@ class AddCompany extends OwnCustomForm {
     return "";
   };
   doSubmit = async (e) => {
-    if (this.props.match.params.id) {
-      let data = await update_company(
-        this.state.data,
-        this.props.match.params.id
-      );
-      let { data: parseData } = data;
-      if (parseData.status == "ok") {
-        this.props.updateCompany(this.state.data, this.props.match.params.id);
-        this.props.history.push("/company");
-      }
-    } else {
       let data = await add_company(this.state.data);
       let { data: parseData } = data;
-      if (parseData.status == "ok") {
-        let { data: finalData } = parseData;
-        let { list: allList } = parseData;
-        this.props.storeCompany(allList, finalData.id);
+      if (parseData.status && parseData.status == "ok") {
         this.props.history.push("/admin/company");
       }
-    }
   };
   render() {
     const {
