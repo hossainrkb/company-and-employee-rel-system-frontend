@@ -4,8 +4,8 @@ import { Route } from "react-router-dom";
 import ProjectAdminApp from "./ProjectAdminApp.jsx";
 import ProjectCompanyApp from "./ProjectCompanyApp.jsx";
 import { getCurrentAdmin } from "./Service/adminService";
-import { getCurrentCompany } from "./Service/companyService";
-import { logout } from "./Service/adminService";
+import { getCurrentCompany,cpmapanyLogout } from "./Service/companyService";
+import { adminLogout } from "./Service/adminService";
 import AdminLogin from "./Component/Admin/Login";
 import CompanyLogin from "./Component/Company/Login";
 import { raiseAdminToken, raiseCompanyToken } from "./Service/tokenService";
@@ -54,7 +54,8 @@ class ProjectApp extends PureComponent {
     }
   };
   handleLogoutAdmin = async () => {
-    await logout();
+    await adminLogout();
+    localStorage.removeItem("accessTokenAdmin");
     this.setState({ adminInfo: {} });
     this.props.history.push(`/admin-login`);
   };

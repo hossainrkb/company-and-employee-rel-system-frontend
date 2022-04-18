@@ -1,6 +1,6 @@
 import http from "./httpService";
 import { getAdminHeaders } from "./adminHeadersService";
-import createContext from "../Common/OwnContext";
+import AdminLoginCredentialContext from "../Common/AdminLoginCredentialContext";
 export async function login(admin) {
   try {
     let {
@@ -9,7 +9,6 @@ export async function login(admin) {
       `${process.env.REACT_APP_SERVER_URL}/oauth/token`,
       admin
     );
-    localStorage.setItem("accessTokenAdmin", access_token);
     return Promise.resolve(access_token);
   } catch (error) {
     return Promise.reject(error);
@@ -31,12 +30,13 @@ export async function getCurrentAdmin() {
     return Promise.reject(error);
   }
 }
-export async function logout() {
+export async function adminLogout() {
   try {
-    localStorage.removeItem("accessTokenAdmin");
-    createContext(null)
+    AdminLoginCredentialContext.SetToken(null);
     return await http.post(
-      `${process.env.REACT_APP_SERVER_URL}/api/admin/logout`
+      `${process.env.REACT_APP_SERVER_URL}/api/admin/logout`,
+      null,
+      getAdminHeaders()
     );
   } catch (error) {
     return null;

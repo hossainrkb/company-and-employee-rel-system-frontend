@@ -59,6 +59,7 @@ class AdminLogin extends OwnCustomForm {
     let data = await login(urlencoded);
     let setToken = AdminLoginCredentialContext.SetToken({ token: data });
     if (setToken) {
+      localStorage.setItem("accessTokenAdmin", data);
       this.props.history.push("admin/company");
     } else {
       alert("Token not set into context");
