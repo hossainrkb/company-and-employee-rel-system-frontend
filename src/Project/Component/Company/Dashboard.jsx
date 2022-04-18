@@ -7,11 +7,9 @@ import {
   approve_leave_application,
   decline_leave_application,
 } from "../../Service/companyService";
-
 import Moment from "react-moment";
 import "moment-timezone";
 
-// react-bootstrap components
 import {
   Badge,
   Button,
@@ -36,6 +34,7 @@ class Dashboard extends Component {
       total_attendance_on_day: "0",
       total_emp_working_hrs: "0",
       latest_five_pending_leave_application: [],
+      company_info: {},
     };
   }
   approveLeaveRequest = async (e, leaveId) => {
@@ -65,7 +64,8 @@ class Dashboard extends Component {
     }
   };
   async componentDidMount() {
-    let { data } = await company_dashboard(this.props.id);
+    this.setState({ company_info: this.context.companyInfo });
+    let { data } = await company_dashboard(this.context.companyInfo.id);
     if (data.status == "ok") {
       let {
         data: { status: info },
@@ -99,6 +99,7 @@ class Dashboard extends Component {
       total_attendance_on_day,
       total_emp_working_hrs,
       latest_five_pending_leave_application,
+      company_info,
     } = this.state;
     return (
       <>
@@ -115,19 +116,13 @@ class Dashboard extends Component {
                     </Col>
                     <Col xs="7">
                       <div className="numbers">
-                        <CompanyInfoContext.Consumer>
-                          {({ companyInfo }) => {
-                            let add_emp_url = `company/${companyInfo.id}/employee`;
-                            return (
-                              <NavLink
-                                to={add_emp_url}
-                                className="card-category"
-                              >
-                                <p>Employee List</p>
-                              </NavLink>
-                            );
-                          }}
-                        </CompanyInfoContext.Consumer>
+                        <NavLink
+                          to={`company/${company_info.id}/employee`}
+                          className="card-category"
+                        >
+                          <p>Employee List</p>
+                        </NavLink>
+
                         <Card.Title as="h4">
                           <p className="badge">{total_emp}</p>
                         </Card.Title>
@@ -155,19 +150,12 @@ class Dashboard extends Component {
                     </Col>
                     <Col xs="7">
                       <div className="numbers">
-                        <CompanyInfoContext.Consumer>
-                          {({ companyInfo }) => {
-                            let add_emp_url = `company/${companyInfo.id}/add-employee`;
-                            return (
-                              <NavLink
-                                to={add_emp_url}
-                                className="card-category"
-                              >
-                                <p>Add Employee</p>
-                              </NavLink>
-                            );
-                          }}
-                        </CompanyInfoContext.Consumer>
+                        <NavLink
+                          to={`company/${company_info.id}/add-employee`}
+                          className="card-category"
+                        >
+                          <p>Add Employee</p>
+                        </NavLink>
                         <Card.Title as="h4">
                           <p className="badge">{remain_quota}</p>
                         </Card.Title>
@@ -195,19 +183,12 @@ class Dashboard extends Component {
                     </Col>
                     <Col xs="7">
                       <div className="numbers">
-                        <CompanyInfoContext.Consumer>
-                          {({ companyInfo }) => {
-                            let attendance_url = `company/${companyInfo.id}/emp-attendance`;
-                            return (
-                              <NavLink
-                                to={attendance_url}
-                                className="card-category"
-                              >
-                                <p>Attendance</p>
-                              </NavLink>
-                            );
-                          }}
-                        </CompanyInfoContext.Consumer>
+                        <NavLink
+                          to={`company/${company_info.id}/emp-attendance`}
+                          className="card-category"
+                        >
+                          <p>Attendance</p>
+                        </NavLink>
                         <Card.Title as="h4">
                           <p className="badge">{total_attendance_on_day}</p>
                         </Card.Title>
@@ -403,5 +384,5 @@ class Dashboard extends Component {
     );
   }
 }
-
+Dashboard.contextType = CompanyInfoContext;
 export default Dashboard;
