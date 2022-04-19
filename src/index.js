@@ -24,12 +24,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/animate.min.css";
 import "./assets/scss/light-bootstrap-dashboard-react.scss?v=2.0.0";
 import "./assets/css/demo.css";
+import "./assets/css/custom.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 // import 'bootstrap/dist/css/bootstrap.css';
 
 import ProjectAdminApp from "./Project/ProjectAdminApp.jsx";
 import ProjectApp from "./Project/ProjectApp.jsx";
 import AdminLogin from "./Project/Component/Admin/Login";
+
 ReactDOM.render(
   <BrowserRouter>
     <ProjectApp />
