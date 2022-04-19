@@ -48,6 +48,8 @@ class Dashboard extends Component {
       total_emp_working_hrs: "0",
       latest_five_pending_leave_application: [],
       company_info: {},
+      pending_salary:0,
+      pending_salary:0,
     };
   }
   approveLeaveRequest = async (e, leaveId) => {
@@ -84,6 +86,10 @@ class Dashboard extends Component {
         data: { status: info },
       } = data;
       this.setState({
+        success_salary:
+          info.emp_salary_stat.success,
+        pending_salary:
+          info.emp_salary_stat.pending,
         total_emp:
           info.total_emp.toString().length == 1
             ? `0${info.total_emp}`
@@ -113,6 +119,8 @@ class Dashboard extends Component {
       total_emp_working_hrs,
       latest_five_pending_leave_application,
       company_info,
+      success_salary,
+      pending_salary,
     } = this.state;
     return (
       <>
@@ -268,7 +276,6 @@ class Dashboard extends Component {
                 <Card.Body>
                   <div className="table-full-width">
                     <Table className="table table-hover table-striped">
-                      {/* <tbody style={{ background:"#17a2b8" }}> */}
                       <tbody>
                         <tr>
                           <td>Month</td>
@@ -278,17 +285,14 @@ class Dashboard extends Component {
                             {new Date().getFullYear()}
                           </td>
                         </tr>
+                       
                         <tr>
-                          <td>Total Active Employee</td>
-                          <td className="text-right">0</td>
+                          <td>Salary Processed Total </td>
+                          <td className="text-right">{success_salary} BDT</td>
                         </tr>
                         <tr>
-                          <td>Salary Success Count </td>
-                          <td className="text-right">0</td>
-                        </tr>
-                        <tr>
-                          <td>Salary Pending Count </td>
-                          <td className="text-right">0</td>
+                          <td>Salary Failed Total </td>
+                          <td className="text-right">{pending_salary} BDT</td>
                         </tr>
                         <tr>
                           <td></td>
