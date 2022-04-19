@@ -24,7 +24,20 @@ import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
-
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -248,6 +261,52 @@ class Dashboard extends Component {
           </Row>
           <Row>
             <Col md="8">
+              <Card>
+                <Card.Header>
+                  <Card.Title as="h4">Employee Salary</Card.Title>
+                </Card.Header>
+                <Card.Body>
+                  <div className="table-full-width">
+                    <Table className="table table-hover table-striped">
+                      {/* <tbody style={{ background:"#17a2b8" }}> */}
+                      <tbody>
+                        <tr>
+                          <td>Month</td>
+                          <td className="text-right">
+                            {" "}
+                            {monthNames[new Date().getMonth()]}{" "}
+                            {new Date().getFullYear()}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Total Active Employee</td>
+                          <td className="text-right">0</td>
+                        </tr>
+                        <tr>
+                          <td>Salary Success Count </td>
+                          <td className="text-right">0</td>
+                        </tr>
+                        <tr>
+                          <td>Salary Pending Count </td>
+                          <td className="text-right">0</td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td className="text-right">
+                            <NavLink
+                              to={`company/${company_info.id}/disburse-salary`}
+                              className="btn btn-info"
+                            >
+                              <i className="fa fa-industry"></i>
+                              Disburse Salary
+                            </NavLink>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </Card.Body>
+              </Card>
               <Card>
                 <Card.Header>
                   <Card.Title as="h4">

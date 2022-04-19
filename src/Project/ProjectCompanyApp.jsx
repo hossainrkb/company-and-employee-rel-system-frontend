@@ -10,7 +10,7 @@ import EmpStat from "./Component/Company/EmpStat";
 import AddEmployee from "./Component/Company/Employee/AddEmployee";
 import EditEmployee from "./Component/Company/Employee/EditEmployee";
 import EmployeeList from "./Component/Company/Employee/EmployeeList";
-import { all_employee, destroy_employee } from "./Service/employeeService";
+import DisburseSalary from "./Component/Company/Employee/DisburseSalary";
 import CompanyInfoContext from "./Component/Context/CompanyInfoContext";
 class ProjectCompanyApp extends PureComponent {
   constructor() {
@@ -64,6 +64,11 @@ class ProjectCompanyApp extends PureComponent {
                 exact
                 path="/company/:documentID/employee"
                 render={(props) => <EmployeeList {...props} />}
+              />
+              <Route
+                exact
+                path="/company/:documentID/disburse-salary"
+                render={(props) => <DisburseSalary {...props} />}
               />
             </Switch>
           </div>

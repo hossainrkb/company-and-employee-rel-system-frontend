@@ -49,6 +49,20 @@ export function emp_stat_create(companyId) {
     getCompanyHeaders()
   );
 }
+export function emp_salary_details(companyId, empId, data) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/${empId}/salary-details`,
+    data,
+    getCompanyHeaders()
+  );
+}
+export function emp_salary_create_ssl_session(companyId, empId, data) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/${empId}/sslcommerz/create-session`,
+    data,
+    getCompanyHeaders()
+  );
+}
 export function emp_stat_details(companyId, empId, month, year) {
   return http.post(
     `${process.env.REACT_APP_SERVER_URL}/api/company/${companyId}/${empId}/${month}/${year}/emp-stat-details`,
