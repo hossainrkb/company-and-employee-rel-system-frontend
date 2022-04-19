@@ -151,7 +151,7 @@ class EmpStat extends React.Component {
           <Row>
             <Col lg="12" sm="12">
               <Card className="card-stats">
-                <div className="px-2 py-2">Employee Status</div>
+                <div className="px-2 py-2 default_style_one default_style_one">Employee Status</div>
                 <Card.Body>
                   <Row>
                     <Col md="1"></Col>
@@ -198,15 +198,15 @@ class EmpStat extends React.Component {
           {Object.keys(search_emp).length > 0 ? (
           <Row>
             <Col lg="12" sm="12">
-              <Card className="card-stats p-2">
-                <div>Employee Details</div>
+              <Card className="card-stats">
+                <div className="px-2 py-2 default_style_one default_style_one">Employee Details</div>
                 <Card.Body>
                   <Row>
                     <Col xs="3">
-                      <Card className="p-2">
-                        <div>Profile</div>
-                        <hr />
-                        {Object.keys(search_emp).length > 0 ? (
+                      <Card>
+                        <div className="px-2 py-2 default_style_one default_style_one">Profile</div>
+                       <Card.Body>
+                       {Object.keys(search_emp).length > 0 ? (
                           <>
                             <p style={emp_profile_style}>
                               Name- {search_emp.name}
@@ -221,10 +221,11 @@ class EmpStat extends React.Component {
                         ) : (
                           ""
                         )}
+                       </Card.Body>
                       </Card>
-                      <Card className="p-2">
-                        <div>Leave Status</div>
-                        <hr />
+                      <Card>
+                      <div className="px-2 py-2 default_style_one default_style_one">Leave Status</div>
+                       <Card.Body>
                         {Object.keys(search_emp).length > 0 ? (
                           <>
                             <p style={emp_profile_style}>
@@ -243,12 +244,13 @@ class EmpStat extends React.Component {
                         ) : (
                           ""
                         )}
+                          </Card.Body>
                       </Card>
                     </Col>
                     <Col xs="9">
-                      <Card className="p-2">
-                        <div>Attendance</div>
-                        <hr />
+                      <Card>
+                      <div className="px-2 py-2 default_style_one default_style_one">Attendance</div>
+                       <Card.Body>
                         <div className="table-responsive">
                           <table className="table text-center">
                             <tr>
@@ -319,6 +321,7 @@ class EmpStat extends React.Component {
                             handleClickePage={this.handleClickePaginationPage}
                           />
                         </div>
+                        </Card.Body>
                       </Card>
                     </Col>
                   </Row>
