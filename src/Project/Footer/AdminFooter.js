@@ -9,7 +9,7 @@ class AdminFooter extends Component {
           <nav>
             <p className="copyright text-center">
               © {new Date().getFullYear()}{" "}
-             <a>Void</a>
+             <span>Void</span>
             </p>
           </nav>
         </Container>
