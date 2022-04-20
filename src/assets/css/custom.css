@@ -3,3 +3,17 @@
     color:#fff !important;
     font-weight: bold;
  }
+.default_style_two{
+    background-color:#ea1d6f !important;
+    color:#fff !important;
+    font-weight: bold;
+ }
+.emp_color{
+    color:#ea1d6f !important;
+ }
+.white_color{
+    color:#fff !important;
+ }
+.cursor_pointer{
+    cursor: pointer;
+ }
