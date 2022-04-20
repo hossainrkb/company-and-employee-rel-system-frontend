@@ -1,5 +1,7 @@
 import http from "./httpService";
 import { getCompanyHeaders } from "./companyHeadersService";
+import { getEmployeeHeaders } from "./employeeHeadersService";
+import EmployeeLoginCredentialContext from "../Common/EmployeeLoginCredentialContext";
 require("dotenv").config();
 
 export async function all_employee(companyID) {
@@ -37,6 +39,9 @@ export function destroy_employee(companyID,id) {
     getCompanyHeaders()
   );
 }
+///////////////////////////////////////////////////////////
+// EmpLoyeee Panel
+///////////////////////////////////////////////////////////
 
 export async function login(company) {
   try {
@@ -46,23 +51,30 @@ export async function login(company) {
       `${process.env.REACT_APP_SERVER_URL}/oauth/token`,
       company
     );
-    localStorage.setItem("accessTokenCompany", access_token);
+    localStorage.setItem("accessTokenEmployee", access_token);
     return Promise.resolve(access_token);
   } catch (error) {
     return Promise.reject(error);
   }
 }
-export async function getCurrentCompany() {
+
+export async function employeeLogout(id) {
   try {
-    let header = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("accessTokenCompany"),
-      },
-    };
+    EmployeeLoginCredentialContext.SetToken(null);
+    return await http.post(
+      `${process.env.REACT_APP_SERVER_URL}/api/employee/logout`,null, getEmployeeHeaders()
+    );
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function getCurrentEmployee() {
+  try {
     let { data } = await http.post(
-      `${process.env.REACT_APP_SERVER_URL}/api/company/profile`,
+      `${process.env.REACT_APP_SERVER_URL}/api/employee/profile`,
       null,
-      header
+      getEmployeeHeaders()
     );
     if (data.status == "ok") {
       return Promise.resolve(data);
@@ -73,13 +85,31 @@ export async function getCurrentCompany() {
     return Promise.reject(error);
   }
 }
-export async function logout() {
-  try {
-    localStorage.removeItem("accessTokenCompany");
-    return await http.post(
-      `${process.env.REACT_APP_SERVER_URL}/api/company/logout`
-    );
-  } catch (error) {
-    return null;
-  }
+export function checkin_employee(id,data) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/employee/${id}/check-in`,
+    data,
+    getEmployeeHeaders()
+  );
+}
+export function checkout_employee(id,data) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/employee/${id}/check-out`,
+    data,
+    getEmployeeHeaders()
+  );
+}
+export function emp_leave_application(id,data) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/employee/${id}/leave-application-employee`,
+    data,
+    getEmployeeHeaders()
+  );
+}
+export function emp_leave_application_logs(id) {
+  return http.post(
+    `${process.env.REACT_APP_SERVER_URL}/api/employee/${id}/leave-application-logs`,
+    null,
+    getEmployeeHeaders()
+  );
 }
