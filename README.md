@@ -1,5 +1,5 @@
 # Application form Employee - Company Management
-* ## This is an api based application. React has been used as frontend.
+* ## This is an api based application. Here it is Frontend React has been used.
 * ## Features
     > Company
     >>
