@@ -31,15 +31,16 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import ProjectAdminApp from "./Project/ProjectAdminApp.jsx";
 import ProjectApp from "./Project/ProjectApp.jsx";
 import AdminLogin from "./Project/Component/Admin/Login";
+import AdminLayout from "layouts/Admin.js";
 
 ReactDOM.render(
   <BrowserRouter>
+     {/* <AdminLayout /> */}
     <ProjectApp />
   </BrowserRouter>,
   document.getElementById("root")
 );
 
-// import AdminLayout from "layouts/Admin.js";
 
 // ReactDOM.render(
 //   <BrowserRouter>
